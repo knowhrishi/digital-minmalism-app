@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "921397255858",
+    "project_id": "digital-minimalism",
+    "storage_bucket": "digital-minimalism.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:921397255858:android:a7a1161df10a2d8ee573ab",
+        "android_client_info": {
+          "package_name": "com.example.digitalminimalism"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjc1-_rrSfQSGnwkWfpIO2moQD9KLi_Ho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

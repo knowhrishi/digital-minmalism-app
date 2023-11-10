@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TrendAnalysisFragment"
+    android:orientation="vertical">
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pie_chart"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:padding="16dp" />
+
+
+    <!-- Bar Chart for displaying data -->
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_above="@+id/analysis_type_spinner"
+        android:padding="16dp" />
+
+    <!-- Spinner for analysis type selection -->
+    <Spinner
+        android:id="@+id/analysis_type_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_above="@+id/comparison_dropdown"
+        android:entries="@array/analysis_types"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp" />
+
+    <!-- Button for date range selection -->
+<!--    <Button-->
+<!--        android:id="@+id/date_range_picker"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:layout_above="@+id/comparison_dropdown"-->
+<!--        android:text="Pick Date Range"-->
+<!--        android:marginBottom="16dp" />-->
+
+<!--    &lt;!&ndash; Spinner for any additional comparison data (if needed) &ndash;&gt;-->
+<!--    <Spinner-->
+<!--        android:id="@+id/comparison_dropdown"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="40dp"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:paddingStart="16dp"-->
+<!--        android:paddingEnd="16dp" />-->
+
+</LinearLayout>

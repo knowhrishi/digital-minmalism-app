@@ -1,0 +1,19 @@
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_filter_daily"
+        android:title="Daily"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_filter_weekly"
+        android:title="Weekly"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_filter_most_used"
+        android:title="Most Used"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_filter_least_used"
+        android:title="Least Used"
+        app:showAsAction="never" />
+</menu>

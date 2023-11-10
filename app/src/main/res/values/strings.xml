@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Digital Minimalism</string>
+    <string name="open_nav">Digital Minimalism Open</string>
+    <string name="close_nav">Digital Minimalism Close</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="channel_name">Notification Channel</string>
+    <string name="channel_description">Channel Desc...</string>
+    <string-array name="analysis_types">
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+        <item>Most Used Apps</item>
+        <item>Least Used Apps</item>
+    </string-array>
+</resources>
