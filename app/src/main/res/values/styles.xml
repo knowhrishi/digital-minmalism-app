@@ -1,0 +1,14 @@
+<resources>
+
+    <style name="Widget.Theme.DigitalMinimalism.ActionBar.Fullscreen" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
+    </style>
+
+    <style name="Widget.Theme.DigitalMinimalism.ButtonBar.Fullscreen" parent="">
+        <item name="android:background">@color/black_overlay</item>
+    </style>
+
+
+    <style name="Base.Widget.MaterialComponents.TextView" parent="Widget.AppCompat.TextView" />
+    <style name="Widget.MaterialComponents.TextView" parent="Base.Widget.MaterialComponents.TextView" />
+</resources>

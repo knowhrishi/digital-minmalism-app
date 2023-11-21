@@ -1,153 +1,213 @@
-package com.example.digitalminimalism
-
-import android.content.Intent
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.Spinner
 import androidx.fragment.app.Fragment
-import com.anychart.AnyChart
-import com.anychart.AnyChartView
-import com.anychart.chart.common.dataentry.DataEntry
-import com.anychart.chart.common.dataentry.ValueDataEntry
-import com.github.mikephil.charting.charts.BarChart
-import com.github.mikephil.charting.charts.PieChart
-import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.components.XAxis
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.digitalminimalism.UsageMonitoringFragment
+import com.example.digitalminimalism.databinding.FragmentTrendAnalysisBinding
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.data.PieData
-import com.github.mikephil.charting.data.PieDataSet
-import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
+import com.example.digitalminimalism.UsageMonitoringFragment.AppUsage
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+
 class TrendAnalysisFragment : Fragment() {
 
-    private lateinit var chart: BarChart
+    private var _binding: FragmentTrendAnalysisBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var adapter: TrendAnalysisAdapter
+    private lateinit var firestoreDB: FirebaseFirestore
+    private lateinit var uniqueID: String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_trend_analysis, container, false)
+        _binding = FragmentTrendAnalysisBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
+    @SuppressLint("HardwareIds")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        firestoreDB = FirebaseFirestore.getInstance()
+        uniqueID = Settings.Secure.getString(requireContext().contentResolver, Settings.Secure.ANDROID_ID)
 
-        chart = view.findViewById(R.id.chart)
-
-        // Populate Spinner with Analysis Types (assuming you have a string-array named analysis_types in res/values/strings.xml)
-        val spinner = view.findViewById<Spinner>(R.id.analysis_type_spinner)
-        ArrayAdapter.createFromResource(requireContext(), R.array.analysis_types, android.R.layout.simple_spinner_item).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spinner.adapter = adapter
+        adapter = TrendAnalysisAdapter(listOf()) { appUsage: UsageMonitoringFragment.AppUsage ->
+            fetchAndDisplayAppSpecificData(appUsage)
         }
 
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parentView: AdapterView<*>, selectedItemView: View, position: Int, id: Long) {
-                val selectedAnalysisType = UsageUtils.AnalysisType.values()[position]
-                updateChart(selectedAnalysisType)
-            }
 
-            override fun onNothingSelected(parentView: AdapterView<*>) {
-                // Do nothing here.
+        binding.appsUsageList.layoutManager = LinearLayoutManager(context)
+        binding.appsUsageList.adapter = adapter
+        setupChartAppearance()
+        fetchAndDisplayUsageData()
+    }
+    private fun fetchAndDisplayUsageData() {
+        val userTrackingRef = firestoreDB.collection("userTracking").document(uniqueID)
+        userTrackingRef.collection("appUsageInfo").get()
+            .addOnSuccessListener { documents ->
+                val usages = documents.mapNotNull { it.toObject<AppUsage>() }
+                adapter.updateData(usages)
+                updateLineChart(usages)
             }
-        }
-
-        updateChart(UsageUtils.AnalysisType.DAILY)
+            .addOnFailureListener { e ->
+                Log.w("Firestore", "Error getting documents: ", e)
+            }
     }
 
-    private fun updatePieChart(usages: List<UsageUtils.AppUsage>) {
-        val pieChart = view?.findViewById<PieChart>(R.id.pie_chart)
+    private fun showTotalUsageTime(appUsage: AppUsage) {
+        val totalMinutes = appUsage.usageTime
+        val hours = totalMinutes / 60
+        val minutes = totalMinutes % 60
+        val timeText = "${hours}h ${minutes}min this week"
+        binding.totalUsageTimeText.text = timeText
+        binding.totalUsageTimeText.visibility = View.VISIBLE
+    }
+    private fun fetchAndDisplayAppSpecificData(appUsage: AppUsage) {
+        // It is assumed that you have a field 'date' in your weeklyUsage documents to order by date
+        firestoreDB.collection("userTracking")
+            .document(uniqueID)
+            .collection("appUsageInfo")
+            .document(appUsage.appName)
+            .collection("weeklyUsage")
+            .orderBy("lastUsedTime") // Make sure to use the correct field for ordering
+            .get()
+            .addOnSuccessListener { documents ->
+                val usageStatsForWeek = documents.mapNotNull { it.toObject<AppUsage>() }
+                updateAppSpecificLineChart(usageStatsForWeek)
+            }
+            .addOnFailureListener { e ->
+                Log.w("Firestore", "Error getting documents for app ${appUsage.appName}: ", e)
+            }
+        showTotalUsageTime(appUsage) // Call this function when an app is selected
 
-        val entries = ArrayList<PieEntry>()
-        for (usage in usages) {
-            entries.add(PieEntry(usage.usageTime.toFloat(), usage.appName))
-        }
-
-        val dataSet = PieDataSet(entries, "App Usage")
-        dataSet.setColors(*ColorTemplate.COLORFUL_COLORS)
-
-        val data = PieData(dataSet)
-        pieChart?.data = data
-
-        // Customize the Pie Chart
-        pieChart?.description?.isEnabled = false
-        pieChart?.isDrawHoleEnabled = true
-        pieChart?.setUsePercentValues(true)
-        pieChart?.setEntryLabelTextSize(12f)
-        pieChart?.setEntryLabelColor(Color.BLACK)
-
-        pieChart?.invalidate()  // Invalidate the Pie Chart to refresh the display
     }
 
 
-    private fun updateChart(analysisType: UsageUtils.AnalysisType) {
-        val usages = UsageUtils.getSocialMediaUsage(requireContext(), analysisType)
-        updatePieChart(usages)  // Update the Pie Chart
-
-
-
-        val barEntries = ArrayList<BarEntry>()
-        for ((index, usage) in usages.withIndex()) {
-            barEntries.add(BarEntry(index.toFloat(), usage.usageTime.toFloat()))
-        }
-
-        val dataSet = BarDataSet(barEntries, "Social Media Usage")
-        dataSet.colors = ColorTemplate.COLORFUL_COLORS.toList()
-
-        val barData = BarData(dataSet)
-        chart.data = barData
-
-//         Customizing the Bar Chart
-        chart.description.isEnabled = false // Hide the default description on the bottom right
-
-// X-Axis Customizations
-        val xAxis = chart.xAxis
+//    private fun updateBarChart(usages: List<AppUsage>) {
+//        // First, sort the usages by the day of the week
+//        val sortedUsages = usages.sortedBy { convertDayOfWeekToIndex(it.dayOfWeek) }
+//
+//        val entries = sortedUsages.map {
+//            BarEntry(convertDayOfWeekToIndex(it.dayOfWeek).toFloat(), it.usageTime.toFloat())
+//        }
+//
+//        val dataSet = BarDataSet(entries, "App Usage")
+//        dataSet.colors = ColorTemplate.MATERIAL_COLORS.toList()
+//        val barData = BarData(dataSet)
+//
+//        val xAxis = binding.appsUsageChart.xAxis
+//        xAxis.valueFormatter = IndexAxisValueFormatter(getDaysOfWeek())
+//        xAxis.position = XAxis.XAxisPosition.BOTTOM
+//        xAxis.setDrawGridLines(false)
+//        xAxis.granularity = 1f
+//
+//        binding.appsUsageChart.data = barData
+//        binding.appsUsageChart.invalidate() // Refresh the chart
+//    }
+private fun setupChartAppearance() {
+    with(binding.appsUsageChart) {
+        axisRight.isEnabled = false
+        axisLeft.axisMinimum = 0f // Start from zero
+        axisLeft.granularity = 1f // Show every minute
         xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.setDrawGridLines(false) // Remove grid lines
-        xAxis.setDrawAxisLine(true)
+        xAxis.setDrawGridLines(false)
         xAxis.granularity = 1f
-        xAxis.labelCount = usages.size
-        xAxis.valueFormatter = IndexAxisValueFormatter(usages.map { it.appName })
+        xAxis.valueFormatter = IndexAxisValueFormatter(getDaysOfWeek())
+        xAxis.labelRotationAngle = -45f // Rotate labels for better fit
+        description.text = "App Usage Over the Week"
+        legend.isEnabled = false
+        setTouchEnabled(true)
+        setPinchZoom(true)
+        setDrawGridBackground(false)
+        animateXY(2000, 2000) // Add some animations
+    }
+}
 
-// Y-Axis Customizations (Left)
-        val leftAxis = chart.axisLeft
-        leftAxis.setDrawGridLines(true)
-        leftAxis.spaceTop = 30f
-        leftAxis.axisMinimum = 0f
 
-// Y-Axis Customizations (Right)
-        val rightAxis = chart.axisRight
-        rightAxis.setDrawGridLines(false)
-        rightAxis.spaceTop = 30f
-        rightAxis.axisMinimum = 0f
+    private fun convertDayOfWeekToIndex(day: String): Int {
+        return when (day) {
+            "Sunday" -> 1
+            "Monday" -> 2
+            "Tuesday" -> 3
+            "Wednesday" -> 4
+            "Thursday" -> 5
+            "Friday" -> 6
+            "Saturday" -> 7
+            else -> 0
+        }
+    }
 
-// Legend Customizations
-        val legend = chart.legend
-        legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
-        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
-        legend.orientation = Legend.LegendOrientation.HORIZONTAL
-        legend.setDrawInside(false)
+    private fun getDaysOfWeek(): List<String> {
+        return listOf("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
+    }
 
-// Bar Width Customization
-        val barSpace = 0.03f
-        val barWidth = 0.2f
+//    private fun updateAppSpecificBarChart(usages: List<AppUsage>) {
+//        // Assuming usages are already ordered by time, convert them to BarEntries
+//        val entries = usages.mapIndexed { index, appUsage ->
+//            BarEntry(index.toFloat(), appUsage.usageTime.toFloat())
+//        }
+//
+//        val dataSet = BarDataSet(entries, "Usage for ${usages.firstOrNull()?.appName ?: "App"}")
+//        dataSet.colors = ColorTemplate.JOYFUL_COLORS.toList()
+//        val barData = BarData(dataSet)
+//        barData.barWidth = 0.9f // Set custom bar width
+//        binding.appsUsageChart.data = barData
+//        binding.appsUsageChart.setFitBars(true) // make the x-axis fit exactly all bars
+//        binding.appsUsageChart.description.isEnabled = false // Hide the description label
+//        binding.appsUsageChart.invalidate() // Refresh the chart
+//    }
+    private fun updateLineChart(usages: List<AppUsage>) {
+        val entries = usages.map { appUsage ->
+            Entry(convertDayOfWeekToIndex(appUsage.dayOfWeek).toFloat(), appUsage.usageTime.toFloat())
+        }
 
-// Other Customizations
-        chart.setPinchZoom(false)
-        chart.setDrawBarShadow(false)
-        chart.setDrawGridBackground(false)
+        val dataSet = LineDataSet(entries, "App Usage")
+        dataSet.colors = listOf(ColorTemplate.getHoloBlue())
+        dataSet.setDrawCircles(true)
+        dataSet.lineWidth = 2.5f
+        dataSet.circleRadius = 4f
 
-// Customizations like animation, axis settings, etc.
-        chart.animateY(500)
-        chart.invalidate()
+        val lineData = LineData(dataSet)
 
-        chart.invalidate()
+        binding.appsUsageChart.data = lineData
+        binding.appsUsageChart.invalidate() // Refresh the chart
+    }
+
+    private fun updateAppSpecificLineChart(usages: List<AppUsage>) {
+        val entries = usages.map { appUsage ->
+            Entry(convertDayOfWeekToIndex(appUsage.dayOfWeek).toFloat(), appUsage.usageTime.toFloat())
+        }
+
+        val dataSet = LineDataSet(entries, "Usage for ${usages.firstOrNull()?.appName ?: "App"}")
+        dataSet.color = ColorTemplate.getHoloBlue()
+        dataSet.valueTextColor = Color.BLACK
+        dataSet.setDrawCircles(true)
+        dataSet.setDrawValues(true)
+        dataSet.lineWidth = 2.5f
+        dataSet.circleRadius = 4f
+        dataSet.setCircleColor(ColorTemplate.getHoloBlue())
+
+        val lineData = LineData(dataSet)
+
+        binding.appsUsageChart.data = lineData
+        binding.appsUsageChart.invalidate() // Refresh the chart
+    }
+
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

@@ -45,13 +45,14 @@ class NotificationAdapter(private var usages: List<UsageMonitoringFragment.AppUs
     class NotificationViewHolder(private val view: View, private val userAppUsageRef: DocumentReference) : RecyclerView.ViewHolder(view) {
         private val icon: ImageView = view.findViewById(R.id.icon)
         private val appName: TextView = view.findViewById(R.id.app_name)
+        @SuppressLint("UseSwitchCompatOrMaterialCode")
         private val notificationSwitch: Switch = view.findViewById(R.id.switch_notification)
         private val remainingTimeTextView: TextView = view.findViewById(R.id.remaining_time) // Change: New TextView for remaining time
         private val firestoreDB = FirebaseFirestore.getInstance()
 
 
 
-        @SuppressLint("ScheduleExactAlarm", "HardwareIds")
+        @SuppressLint("ScheduleExactAlarm", "HardwareIds", "SetTextI18n")
         fun bind(appUsage: UsageMonitoringFragment.AppUsage, position: Int) { // Change: Receive position parameter
             icon.setImageResource(appUsage.icon)
             val data = hashMapOf(

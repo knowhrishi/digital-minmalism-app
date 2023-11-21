@@ -8,6 +8,9 @@ plugins {
 android {
     namespace = "com.example.digitalminimalism"
     compileSdk = 34
+    buildFeatures {
+        viewBinding = true
+    }
 
     defaultConfig {
         applicationId = "com.example.digitalminimalism"

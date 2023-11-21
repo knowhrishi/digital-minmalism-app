@@ -1,22 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="200dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="16dp"
-    app:cardElevation="4dp"
-    app:cardCornerRadius="8dp">
+    app:cardElevation="6dp"
+    app:cardCornerRadius="12dp"
+    android:layout_gravity="center"
+    app:cardBackgroundColor="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/close_button"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_close" /> <!-- Replace with close icon drawable -->
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:gravity="center"
+        android:padding="16dp"> <!-- Optional: Add a background drawable for visual appeal -->
 
         <ImageView
             android:id="@+id/popup_app_icon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/ic_launcher_background" /> <!-- Replace with actual drawable -->
 
@@ -26,8 +43,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_gravity="center"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold"
+            android:textColor="@color/black"
             android:text="App Name" />
 
         <TextView
@@ -35,11 +53,41 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:text="Usage Time: 0 minutes" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            tools:ignore="MissingConstraints">
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/chart"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="8dp"
+                android:padding="8dp"
+                tools:ignore="MissingConstraints" />
+
+
+            <TextView
+                android:id="@+id/recommendation_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:textStyle="italic"
+                tools:ignore="MissingConstraints" />
+        </LinearLayout>
 
         <!-- Add more TextViews or other components as needed to display the data -->
 
     </LinearLayout>
 
+    </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>
