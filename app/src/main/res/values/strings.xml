@@ -17,4 +17,10 @@
     <string name="title_activity_fullscreen">FullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="focus_date">Date: </string>
+    <string name="focus_date_text_view">focus_date_text_view</string>
+    <string name="time">Time: </string>
+    <string name="focus_time_text_view">focus_time_text_view</string>
+    <string name="status">Status: </string>
+    <string name="focus_status_text_view">focus_status_text_view</string>
 </resources>

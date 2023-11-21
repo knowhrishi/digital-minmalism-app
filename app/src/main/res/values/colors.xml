@@ -7,4 +7,7 @@
     <color name="light_blue_A200">#FF40C4FF</color>
     <color name="light_blue_A400">#FF00B0FF</color>
     <color name="black_overlay">#66000000</color>
+    <color name="progressIndicatorColor">#8739F6</color> <!-- Example color -->
+    <color name="progressIndicatorBackgroundColor">#C7A7FF</color> <!-- Example background color with transparency -->
+
 </resources>

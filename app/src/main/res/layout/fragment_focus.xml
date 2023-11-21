@@ -1,43 +1,114 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <!-- Total Focus Time Display -->
+            <TextView
+                android:id="@+id/total_focus_time_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="Total Time: 0" />
+
+            <!-- Average Focus Time Display -->
+            <TextView
+                android:id="@+id/average_focus_time_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="Average Time: 0" />
+
+            <!-- Longest Focus Session Display -->
+            <TextView
+                android:id="@+id/longest_focus_session_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="Longest Session: 0"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <!-- Status Indicator -->
+            <TextView
+                android:id="@+id/status_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="Status: Inactive"/>
+
+            <!-- Streaks Display -->
+            <TextView
+                android:id="@+id/streaks_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="Current Streak: 0"/>
+
+            <!-- Goal Progress Bar -->
+
+
+            <!-- Reward Badges Display -->
+            <TextView
+                android:id="@+id/reward_badges_display"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="Badges: None"/>
+        </LinearLayout>
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/goal_progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxWidth="5dp"
+            android:padding="10dp"
+            android:tooltipText="Goal Progress"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark" />
         <!-- Countdown Timer and Progress Indicator Card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp">
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:background="@color/white"
+            app:cardCornerRadius="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:orientation="horizontal">
 
-                <com.google.android.material.textview.MaterialTextView
+                <TextView
                     android:id="@+id/countdown_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="24sp"
+                    android:text="No active focus mode."
                     android:textColor="@color/black"
-                    style="@style/Widget.MaterialComponents.TextView"
-                    android:text="No active focus mode."/>
+                    android:layout_gravity="center"
+                    android:textSize="20sp" />
 
                 <com.google.android.material.progressindicator.CircularProgressIndicator
                     android:id="@+id/progress_circular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp" />
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+
+                    style="@style/CustomCircularProgressIndicator" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -46,9 +117,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginBottom="16dp"
             android:gravity="center"
-            android:layout_marginBottom="16dp">
+            android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/set_focus_button"
@@ -57,97 +128,29 @@
                 android:text="Set Focus Mode"
                 app:cornerRadius="8dp"
                 app:icon="@drawable/ic_start_focus_mode"
-                app:iconGravity="textStart"/>
+                app:iconGravity="textStart" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/cancel_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cancel Focus Mode"
                 android:layout_marginStart="8dp"
+                android:text="Cancel Focus Mode"
+                android:visibility="gone"
                 app:cornerRadius="8dp"
                 app:icon="@drawable/ic_cancel"
-                app:iconGravity="textStart"
-                android:visibility="gone"/>
+                app:iconGravity="textStart" />
         </LinearLayout>
 
         <!-- Additional UI elements can be added here -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_focus_sessions"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:gravity="center">
-
-            <!-- Status Indicator -->
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/status_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Status: Inactive"
-                android:layout_marginTop="16dp"
-                android:textAppearance="?attr/textAppearanceSubtitle1"/>
-
-            <!-- Existing Views... -->
-
-            <!-- Streaks Display -->
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/streaks_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Current Streak: 0"
-                android:layout_marginTop="16dp"
-                android:textAppearance="?attr/textAppearanceSubtitle1"/>
-
-            <!-- Goal Progress Bar -->
-            <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:id="@+id/goal_progress_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark"
-                android:maxWidth="5dp"/>
-
-            <!-- Reward Badges Display -->
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/reward_badges_display"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Badges: None"
-                android:layout_marginTop="16dp"
-                android:textAppearance="?attr/textAppearanceSubtitle1"/>
-
-            <!-- Existing Buttons... -->
-
-            <!-- Total Focus Time Display -->
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/total_focus_time_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Total Focus Time: 0"
-                android:layout_marginTop="16dp"
-                android:textAppearance="?attr/textAppearanceSubtitle1"/>
-
-            <!-- Average Focus Time Display -->
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/average_focus_time_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Average Focus Time: 0"
-                android:layout_marginTop="16dp"
-                android:textAppearance="?attr/textAppearanceSubtitle1"/>
-
-            <!-- Longest Focus Session Display -->
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/longest_focus_session_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Longest Focus Session: 0"
-                android:layout_marginTop="16dp"
-                android:textAppearance="?attr/textAppearanceSubtitle1"/>
-        </LinearLayout>
-
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="0.5dp" />
 
     </LinearLayout>
 </ScrollView>

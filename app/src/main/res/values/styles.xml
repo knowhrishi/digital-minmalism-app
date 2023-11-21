@@ -11,4 +11,11 @@
 
     <style name="Base.Widget.MaterialComponents.TextView" parent="Widget.AppCompat.TextView" />
     <style name="Widget.MaterialComponents.TextView" parent="Base.Widget.MaterialComponents.TextView" />
+
+    <style name="CustomCircularProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator">
+        <item name="trackColor">@color/progressIndicatorBackgroundColor</item>
+        <item name="indicatorColor">@color/progressIndicatorColor</item>
+        <item name="trackThickness">20dp</item> <!-- Example thickness -->
+        <!-- Other customization like trackCornerRadius, indicatorSize can be added here -->
+    </style>
 </resources>

@@ -2,9 +2,8 @@
 package com.example.digitalminimalism
 
 
+import FocusAdapter
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.app.Notification
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
@@ -16,19 +15,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.TimePicker
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
@@ -44,11 +42,11 @@ class FocusFragment : Fragment() {
     private lateinit var setFocusButton: MaterialButton
     private var currentTimerDocId: String? = null
     private lateinit var progressIndicator: CircularProgressIndicator
-
     private lateinit var statusTextView: TextView
     private lateinit var streaksTextView: TextView
     private lateinit var goalProgressBar: ProgressBar
-
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: FocusAdapter
     @SuppressLint("MissingInflatedId", "HardwareIds")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -90,13 +88,31 @@ class FocusFragment : Fragment() {
         SharedPreferencesManager.init(requireContext())
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        recyclerView = view.findViewById(R.id.recycler_focus_sessions)
+        adapter = FocusAdapter(requireContext(), listOf()) // Initialize with an empty list or fetched data
+
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        fetchFocusModeData() // Load data and update adapter
         view.findViewById<View>(R.id.set_focus_button).setOnClickListener {
             showTimePickerDialog()
         }
+    }
 
+    data class FocusSession(
+        val startTime: Long = 0,
+        val duration: Long = 0,
+        val status: String = "unknown"
+    )
+
+
+    @SuppressLint("SetTextI18n")
+    private fun fetchFocusModeData() {
         // Fetch the focus mode data from Firestore
         val userTrackingRef = firestoreDB.collection("userTracking").document(uniqueID)
         userTrackingRef.collection("focusModeInfo")
@@ -106,14 +122,24 @@ class FocusFragment : Fragment() {
                 val totalFocusTime = calculateTotalFocusTime(documents)
                 val averageFocusTime = calculateAverageFocusTime(documents)
                 val longestFocusSession = calculateLongestFocusSession(documents)
+//                adapter = FocusAdapter(requireContext(), focusSessions)
+//                recyclerView.adapter = adapter
 
+                val focusSessions = documents.map { document ->
+                    FocusSession(
+                        startTime = document.getLong("startTime") ?: 0,
+                        duration = document.getLong("duration") ?: 0,
+                        status = document.getString("status") ?: "unknown"
+                    )
+                }
+                adapter.updateFocusSessions(focusSessions)
                 // Display the stats
-                view.findViewById<TextView>(R.id.total_focus_time_text_view).text =
-                    "Total Focus Time: $totalFocusTime"
-                view.findViewById<TextView>(R.id.average_focus_time_text_view).text =
-                    "Average Focus Time: $averageFocusTime"
-                view.findViewById<TextView>(R.id.longest_focus_session_text_view).text =
-                    "Longest Focus Session: $longestFocusSession"
+                view?.findViewById<TextView>(R.id.total_focus_time_text_view)?.text =
+                    "Total Time: $totalFocusTime"
+                view?.findViewById<TextView>(R.id.average_focus_time_text_view)?.text =
+                    "Average Time: $averageFocusTime"
+                view?.findViewById<TextView>(R.id.longest_focus_session_text_view)?.text =
+                    "Longest Session: $longestFocusSession"
             }
             .addOnFailureListener { e ->
                 Toast.makeText(
@@ -122,9 +148,9 @@ class FocusFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-
-
     }
+
+
     private fun calculateAverageFocusTime(documents: QuerySnapshot): Int {
         val completedSessions = documents.documents.filter { it.getString("status") == "completed" }
         return if (completedSessions.isNotEmpty()) {
@@ -141,6 +167,7 @@ class FocusFragment : Fragment() {
     }
 
 
+    @SuppressLint("SetTextI18n")
     private fun updateStatusTextView(status: String) {
         statusTextView.text = "Status: $status"
     }
@@ -224,64 +251,64 @@ class FocusFragment : Fragment() {
 
     }
 
-    @SuppressLint("ServiceCast")
+    @SuppressLint("ServiceCast", "SetTextI18n")
     private fun cancelFocusMode() {
-
-                    // Cancel the focus mode if user chooses 'Yes'
-                    countDownTimer?.cancel()
-                    countdownTextView.text = "Focus mode canceled."
-                    progressIndicator.visibility = View.GONE
-                    setFocusButton.visibility = View.VISIBLE
-                    resetDndMode(requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
-                    val docId1 = SharedPreferencesManager.getTimerDocId()
+        // Cancel the focus mode if user chooses 'Yes'
+        countDownTimer?.cancel()
+        countdownTextView.text = "Focus mode canceled."
+        progressIndicator.visibility = View.GONE
+        setFocusButton.visibility = View.VISIBLE
+        resetDndMode(requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
+        val docId1 = SharedPreferencesManager.getTimerDocId()
+        Log.d(
+            "FocusFragment",
+            "Attempting to cancel focus mode in Firestore for Doc ID: $docId1"
+        )
+        docId1?.let { docId ->
+            val userTrackingRef =
+                firestoreDB.collection("userTracking").document(uniqueID)
+            userTrackingRef.collection("focusModeInfo").document(docId)
+                .update("status", "incomplete")
+                .addOnSuccessListener {
                     Log.d(
                         "FocusFragment",
-                        "Attempting to cancel focus mode in Firestore for Doc ID: $docId1"
+                        "Focus mode successfully updated in Firestore."
                     )
-                    docId1?.let { docId ->
-                        val userTrackingRef =
-                            firestoreDB.collection("userTracking").document(uniqueID)
-                        userTrackingRef.collection("focusModeInfo").document(docId)
-                            .update("status", "incomplete")
-                            .addOnSuccessListener {
-                                Log.d(
-                                    "FocusFragment",
-                                    "Focus mode successfully updated in Firestore."
-                                )
-                                Toast.makeText(
-                                    requireContext(),
-                                    "Focus mode canceled and status updated in Firestore",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                updateStatusTextView("Inactive") // Update UI here
-                            }
-                            .addOnFailureListener { e ->
-                                Log.e("FocusFragment", "Failed to update Firestore: ${e.message}")
-                                Toast.makeText(
-                                    requireContext(),
-                                    "Failed to update Firestore: ${e.message}",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                    } ?: Log.e("FocusFragment", "Document ID is null, cannot update Firestore.")
+                    Toast.makeText(
+                        requireContext(),
+                        "Focus mode canceled and status updated in Firestore",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    updateStatusTextView("Inactive") // Update UI here
+                }
+                .addOnFailureListener { e ->
+                    Log.e("FocusFragment", "Failed to update Firestore: ${e.message}")
+                    Toast.makeText(
+                        requireContext(),
+                        "Failed to update Firestore: ${e.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+        } ?: Log.e("FocusFragment", "Document ID is null, cannot update Firestore.")
 
-                    updateStreaksAndTotalFocusTime()
-                    updateStatusTextView("Inactive")
-                    countdownTextView.text = "Focus mode canceled. Start New Focus Mode."
-                    updateStatusTextView("Inactive")
-                    progressIndicator.visibility = View.GONE
-                    setFocusButton.visibility = View.VISIBLE
-                    cancelButton.visibility = View.GONE
+        updateStreaksAndTotalFocusTime()
+        fetchFocusModeData()
+        updateStatusTextView("Inactive")
+        countdownTextView.text = "Focus mode canceled. Start New Focus Mode."
+        updateStatusTextView("Inactive")
+        progressIndicator.visibility = View.GONE
+        setFocusButton.visibility = View.VISIBLE
+        cancelButton.visibility = View.GONE
 
     }
 
-    fun calculateTotalFocusTime(documents: QuerySnapshot): Int {
+    private fun calculateTotalFocusTime(documents: QuerySnapshot): Int {
         return documents.documents
             .filter { it.getString("status") == "completed" }
             .sumOf { it.getLong("duration") ?: 0 }.toInt()
     }
 
-    fun calculateStreaks(documents: QuerySnapshot): Int {
+    private fun calculateStreaks(documents: QuerySnapshot): Int {
         val sortedSessions = documents.documents
             .filter { it.getString("status") == "completed" }
             .sortedByDescending { it.getLong("startTime") }
@@ -302,6 +329,7 @@ class FocusFragment : Fragment() {
         return streaks
     }
 
+    @SuppressLint("SetTextI18n")
     private fun checkForActiveTimer() {
         val userTrackingRef = firestoreDB.collection("userTracking").document(uniqueID)
         userTrackingRef.collection("focusModeInfo")
@@ -310,26 +338,31 @@ class FocusFragment : Fragment() {
             .addOnSuccessListener { documents ->
                 // Explicitly check if documents contain any elements
                 if (!documents.isEmpty) {
-                    val activeTimer =
-                        documents.documents.firstOrNull() // Retrieve the first document
-                    activeTimer?.let {
-                        val timerSetUntil = it.getLong("timerSetUntil") ?: 0
+                    var activeTimerFound = false
+                    for (document in documents) {
+                        val timerSetUntil = document.getLong("timerSetUntil") ?: 0
                         if (System.currentTimeMillis() < timerSetUntil) {
-                            setFocusButton.visibility = View.GONE
-                            startCountdown(timerSetUntil)
-                            updateStatusTextView("Active")
-                            streaksTextView.text = "Current Streak: ${it.getLong("currentStreak")}"
-
+                            if (!activeTimerFound) {
+                                // This is the first active timer found
+                                activeTimerFound = true
+                                setFocusButton.visibility = View.GONE
+                                startCountdown(timerSetUntil)
+                                updateStatusTextView("Active")
+                                streaksTextView.text =
+                                    "Current Streak: ${document.getLong("currentStreak")}"
+                            }
                         } else {
-                            countdownTextView.text = "No active focus mode."
-                            updateStatusTextView("Inactive")
-
+                            // The timer is no longer active, update its status in Firestore
+                            document.reference.update("status", "completed")
                         }
+                    }
+                    if (!activeTimerFound) {
+                        countdownTextView.text = "No active focus mode."
+                        updateStatusTextView("Inactive")
                     }
                 } else {
                     countdownTextView.text = "No active focus mode."
                     updateStatusTextView("Inactive")
-
                 }
             }
             .addOnFailureListener {
@@ -340,7 +373,7 @@ class FocusFragment : Fragment() {
                 ).show()
             }
         updateStreaksAndTotalFocusTime()
-
+        fetchFocusModeData()
     }
 
     private fun startCountdown(timerSetUntil: Long) {
@@ -367,13 +400,14 @@ class FocusFragment : Fragment() {
 
             @SuppressLint("SetTextI18n")
             override fun onFinish() {
+                resetDndMode(requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
                 countdownTextView.text = "Focus mode completed."
                 progressIndicator.visibility = View.GONE
                 cancelButton.visibility = View.GONE
                 setFocusButton.visibility = View.VISIBLE
                 countdownTextView.text = "No active focus mode."
-                resetDndMode(requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
 
+                fetchFocusModeData()
                 currentTimerDocId?.let { docId ->
                     firestoreDB.collection("userTracking").document(uniqueID)
                         .collection("focusModeInfo").document(docId)
@@ -413,6 +447,7 @@ class FocusFragment : Fragment() {
                 streaksTextView.text = "Current Streak: $streaks"
                 goalProgressBar.progress =
                     (totalFocusTime.toFloat() / WEEKLY_FOCUS_GOAL * 100).toInt()
+
             }
             .addOnFailureListener { /* Handle failure */ }
     }
