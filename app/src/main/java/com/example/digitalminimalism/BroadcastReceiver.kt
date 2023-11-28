@@ -15,19 +15,36 @@ import com.google.firebase.firestore.FirebaseFirestore
 class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        val appName = intent.getStringExtra("appName") ?: "App"
-        val firestoreDB = FirebaseFirestore.getInstance()
+        val action = intent.action
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        firestoreDB.collection("appUsageInfo").document(appName)
-            .get()
-            .addOnSuccessListener { document ->
-                if (document != null && document.exists()) {
-                    val usageTime = document.getLong("usageTime") ?: 0
-                    if (usageTime > 60) { // 60 minutes threshold
-                        triggerNotification(context, appName, usageTime)
-                    }
+        when (action) {
+            "com.example.digitalminimalism.START_DND_MODE" -> {
+                if (notificationManager.isNotificationPolicyAccessGranted) {
+                    notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_NONE)
                 }
             }
+            "com.example.digitalminimalism.END_DND_MODE" -> {
+                if (notificationManager.isNotificationPolicyAccessGranted) {
+                    notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
+                }
+            }
+            else -> {
+                val appName = intent.getStringExtra("appName") ?: "App"
+                val firestoreDB = FirebaseFirestore.getInstance()
+
+                firestoreDB.collection("appUsageInfo").document(appName)
+                    .get()
+                    .addOnSuccessListener { document ->
+                        if (document != null && document.exists()) {
+                            val usageTime = document.getLong("usageTime") ?: 0
+                            if (usageTime > 60) { // 60 minutes threshold
+                                triggerNotification(context, appName, usageTime)
+                            }
+                        }
+                    }
+            }
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -35,7 +52,8 @@ class AlarmReceiver : BroadcastReceiver() {
         createNotificationChannel(context)
 
         val notificationIntent = Intent(context, MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0)
+        val pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent,
+            PendingIntent.FLAG_IMMUTABLE)
 
         val notificationId = appName.hashCode() // Unique ID based on the app's name
         val textContent = "You have used $appName for more than ${usageTime} minutes today!"

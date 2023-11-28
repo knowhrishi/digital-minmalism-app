@@ -1,0 +1,27 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_active_focus"
+        android:icon="@drawable/ic_button_active"
+        android:title="@string/active" />
+    <item
+        android:id="@+id/nav_schedule_focus"
+        android:icon="@drawable/ic_button_schedule"
+        android:title="@string/schedule" />
+    <!-- Add other items as needed -->
+
+    <item
+        android:id="@+id/nav_home_focus"
+        android:icon="@drawable/ic_home"
+        android:title="@string/home" />
+    <item
+        android:id="@+id/nav_timer_focus"
+        android:icon="@drawable/ic_button_timer"
+        android:title="@string/timer" />
+    <item
+        android:id="@+id/nav_history_focus"
+        android:icon="@drawable/ic_button_history"
+        android:title="@string/history" />
+    <!-- Add other items as needed -->
+
+    <!-- Add other items as needed -->
+</menu>

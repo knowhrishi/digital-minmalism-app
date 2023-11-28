@@ -23,4 +23,22 @@
     <string name="focus_time_text_view">focus_time_text_view</string>
     <string name="status">Status: </string>
     <string name="focus_status_text_view">focus_status_text_view</string>
+    <string name="title_activity_data_usage_analysis">DataUsageAnalysisActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="active">Active</string>
+    <string name="schedule">Schedule</string>
+    <string name="home">Home</string>
+    <string name="timer">Timer</string>
+    <string name="history">History</string>
+
+    <string-array name="time_periods">
+        <item>Today</item>
+        <item>Last 7 days</item>
+        <item>Last 30 days</item>
+        <item>Last 60 minutes</item>
+    </string-array>
 </resources>

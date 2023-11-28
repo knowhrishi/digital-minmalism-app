@@ -1,17 +1,18 @@
-package com.example.digitalminimalism
+package com.example.digitalminimalism.Usage
 // UsageAdapter.kt
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.github.mikephil.charting.charts.BarChart
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
+import com.example.digitalminimalism.R
 
 class UsageAdapter(
     private var usages: MutableList<UsageMonitoringFragment.AppUsage>,
@@ -36,15 +37,33 @@ class UsageAdapter(
         private val appName: TextView = view.findViewById(R.id.app_name)
         val usageTime: TextView = view.findViewById(R.id.usage_time)
 
-
         @SuppressLint("SetTextI18n")
         fun bind(appUsage: UsageMonitoringFragment.AppUsage) {
-            icon.setImageResource(appUsage.icon)
+            val appIconImageView: ImageView = view.findViewById(R.id.icon)
+            val appIcon = getAppIcon(appUsage.packageName, view.context)
+            appIconImageView.setImageDrawable(appIcon)
             appName.text = appUsage.appName
             usageTime.text = "${appUsage.usageTime} minutes"
             view.setOnClickListener {
                 itemClick(appUsage) // Call the passed lambda function
             }
+        }
+    }
+
+    private fun getAppIcon(packageName: String, context: Context): Drawable? {
+        return when (packageName) {
+            "com.facebook.katana" -> ContextCompat.getDrawable(context, R.drawable.ic_facebook)
+            "com.instagram.android" -> ContextCompat.getDrawable(context, R.drawable.ic_instagram)
+            "com.twitter.android" -> ContextCompat.getDrawable(context, R.drawable.ic_twitter)
+            "com.snapchat.android" -> ContextCompat.getDrawable(context, R.drawable.ic_snapchat)
+            "com.pinterest" -> ContextCompat.getDrawable(context, R.drawable.iconpinterest)
+            "com.whatsapp" -> ContextCompat.getDrawable(context, R.drawable.ic_whatsapp)
+            "com.linkedin.android" -> ContextCompat.getDrawable(context, R.drawable.ic_linkedin)
+            "com.google.android.youtube" -> ContextCompat.getDrawable(context, R.drawable.ic_youtube)
+            "com.reddit.frontpage" -> ContextCompat.getDrawable(context, R.drawable.ic_reddit)
+            "com.spotify.music" -> ContextCompat.getDrawable(context, R.drawable.ic_spotify)
+            "com.zhiliaoapp.musically" -> ContextCompat.getDrawable(context, R.drawable.ic_tiktok)
+            else -> ContextCompat.getDrawable(context, R.drawable.ic_other)
         }
     }
 

@@ -16,9 +16,9 @@ import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.digitalminimalism.Usage.UsageMonitoringFragment
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 
 class NotificationAdapter(private var usages: List<UsageMonitoringFragment.AppUsage>, private val context: Context) :
     RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>() {
@@ -54,7 +54,7 @@ class NotificationAdapter(private var usages: List<UsageMonitoringFragment.AppUs
 
         @SuppressLint("ScheduleExactAlarm", "HardwareIds", "SetTextI18n")
         fun bind(appUsage: UsageMonitoringFragment.AppUsage, position: Int) { // Change: Receive position parameter
-            icon.setImageResource(appUsage.icon)
+//            icon.setImageResource(appUsage.icon)
             val data = hashMapOf(
                 "usageTime" to appUsage.usageTime,
                 "lastUpdated" to System.currentTimeMillis(),

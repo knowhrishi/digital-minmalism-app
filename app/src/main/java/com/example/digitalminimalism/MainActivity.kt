@@ -1,6 +1,8 @@
 package com.example.digitalminimalism
 
-import TrendAnalysisFragment
+import FocusModeFragment
+import TimerStatusService
+import com.example.digitalminimalism.Analysis.TrendAnalysisFragment
 import android.app.AppOpsManager
 import android.content.Context
 import android.content.Intent
@@ -18,11 +20,18 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
 import android.Manifest
+import android.Manifest.*
+import android.Manifest.permission.*
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContentProviderCompat.requireContext
+import com.example.digitalminimalism.Usage.UsageMonitoringFragment
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var drawerLayout: DrawerLayout
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -37,6 +46,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 .replace(R.id.fragment_container, UsageMonitoringFragment())
                 .commit()
         }
+        val intent = Intent(this, TimerStatusService::class.java)
+        this.startService(intent)
     }
 
     private fun hasUsageStatsPermission(): Boolean {
@@ -48,14 +59,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return mode == AppOpsManager.MODE_ALLOWED
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     private fun requestRuntimePermissions() {
         val requiredPermissions = arrayOf(
-            Manifest.permission.INTERNET,
-            Manifest.permission.ACCESS_NETWORK_STATE,
-            Manifest.permission.FOREGROUND_SERVICE,
-            Manifest.permission.POST_NOTIFICATIONS,
-            Manifest.permission.SCHEDULE_EXACT_ALARM,
-            Manifest.permission.SET_ALARM
+            INTERNET,
+            ACCESS_NETWORK_STATE,
+            FOREGROUND_SERVICE,
+            POST_NOTIFICATIONS,
+            SCHEDULE_EXACT_ALARM,
+            SET_ALARM,
+            ACCESS_NOTIFICATION_POLICY
         )
 
         val permissionsToRequest = requiredPermissions.filter {
@@ -85,8 +98,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.nav_usage_tracking -> loadFragment(UsageMonitoringFragment())
             R.id.nav_trend_analysis -> loadFragment(TrendAnalysisFragment())
-            R.id.nav_notification -> loadFragment(NotificationFragment())
-            R.id.nav_focus_mode -> loadFragment(FocusFragment())
+//            R.id.nav_notification -> loadFragment(NotificationFragment())
+            R.id.nav_focus_mode -> loadFragment(FocusModeFragment())
             // Add other cases as necessary
         }
         drawerLayout.closeDrawer(GravityCompat.START)

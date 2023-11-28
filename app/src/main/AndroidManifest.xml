@@ -25,9 +25,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DigitalMinimalism"
         tools:targetApi="31">
-        <activity android:name=".FullScreenReminderActivity"/>
-        <!-- <receiver android:name=".BroadcastReceiver"/> -->
-        <service android:name=".AppUsageUtil" />
+
+        <receiver android:name=".AlarmReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.example.digitalminimalism.START_DND_MODE" />
+                <action android:name="com.example.digitalminimalism.END_DND_MODE" />
+            </intent-filter>
+        </receiver>
+        <activity
+            android:name=".Analysis.DayOfWeekAnalysisActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Analysis.AppUsageFrequencyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Analysis.DataUsageAnalysisActivity"
+            android:exported="false"
+            android:label="@string/title_activity_data_usage_analysis"
+            android:theme="@style/Theme.DigitalMinimalism" />
+        <activity
+            android:name=".Analysis.UsageTimeAnalysisActivity"
+            android:exported="false" />
+        <activity android:name=".Focus.FocusStats" />
+        <activity android:name=".FullScreenReminderActivity" />
+
 
         <activity
             android:name=".MainActivity"
@@ -38,6 +60,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- Add your service declaration here -->
+        <service android:name=".TimerStatusService"
+            android:exported="false"/>
     </application>
 
 </manifest>

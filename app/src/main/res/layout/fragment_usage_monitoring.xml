@@ -1,29 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".UsageMonitoringFragment">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_apps_usage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:orientation="vertical"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context=".Usage.UsageMonitoringFragment">
+        <Spinner
+            android:id="@+id/spinner_time_period"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/time_periods" />
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottieAnimationView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:lottie_url="https://lottie.host/facb0c19-b670-4fc2-b18d-13f897854069/KXuCLByq6S.json"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_apps_usage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieAnimationView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:lottie_url="https://lottie.host/facb0c19-b670-4fc2-b18d-13f897854069/KXuCLByq6S.json"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -32,5 +41,6 @@
         android:layout_margin="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_gravity="right"
         android:src="@drawable/ic_refresh"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>

@@ -1,8 +1,5 @@
-//FocusFragment.kt
-package com.example.digitalminimalism
+package com.example.digitalminimalism.Focus.BottomNavigation
 
-
-import FocusAdapter
 import android.annotation.SuppressLint
 import android.app.NotificationManager
 import android.content.Context
@@ -13,25 +10,31 @@ import android.os.Handler
 import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.digitalminimalism.Focus.FocusAdapter
+import com.example.digitalminimalism.Focus.FocusSessionDataClass
+import com.example.digitalminimalism.Focus.FocusStats
+import com.example.digitalminimalism.R
+import com.example.digitalminimalism.SharedPreferencesManager
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 
-class FocusFragment : Fragment() {
+class ActiveNavFragment : Fragment() {
 
     private lateinit var uniqueID: String
     private val firestoreDB: FirebaseFirestore = FirebaseFirestore.getInstance()
@@ -45,17 +48,18 @@ class FocusFragment : Fragment() {
     private lateinit var statusTextView: TextView
     private lateinit var streaksTextView: TextView
     private lateinit var goalProgressBar: ProgressBar
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: FocusAdapter
+
     @SuppressLint("MissingInflatedId", "HardwareIds")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val view = inflater.inflate(R.layout.fragment_active_nav, container, false)
+        (activity as? AppCompatActivity)?.supportActionBar?.title = "Focus Mode"
+
         uniqueID =
             Settings.Secure.getString(requireContext().contentResolver, Settings.Secure.ANDROID_ID)
-        val view = inflater.inflate(R.layout.fragment_focus, container, false)
         setFocusButton = view.findViewById(R.id.set_focus_button)
         countdownTextView = view.findViewById(R.id.countdown_text_view)
         cancelButton = view.findViewById(R.id.cancel_button)
@@ -80,36 +84,30 @@ class FocusFragment : Fragment() {
         }
         cancelButton.visibility = View.GONE
         checkForActiveTimer()
+
+
+        fetchFocusModeData() // Load data and update adapter
+        setFocusButton.setOnClickListener {
+            showTimePickerDialog()
+        }
+
         return view
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        SharedPreferencesManager.init(requireContext())
-    }
+    @Deprecated("Deprecated in Java")
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_statistics -> {
+                // Navigate to Statistics Fragment or Activity
+                Intent(requireContext(), FocusStats::class.java).also {
+                    startActivity(it)
+                }
+                true
+            }
 
-    @SuppressLint("SetTextI18n")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        recyclerView = view.findViewById(R.id.recycler_focus_sessions)
-        adapter = FocusAdapter(requireContext(), listOf()) // Initialize with an empty list or fetched data
-
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-        fetchFocusModeData() // Load data and update adapter
-        view.findViewById<View>(R.id.set_focus_button).setOnClickListener {
-            showTimePickerDialog()
+            else -> super.onOptionsItemSelected(item)
         }
     }
-
-    data class FocusSession(
-        val startTime: Long = 0,
-        val duration: Long = 0,
-        val status: String = "unknown"
-    )
-
 
     @SuppressLint("SetTextI18n")
     private fun fetchFocusModeData() {
@@ -122,17 +120,7 @@ class FocusFragment : Fragment() {
                 val totalFocusTime = calculateTotalFocusTime(documents)
                 val averageFocusTime = calculateAverageFocusTime(documents)
                 val longestFocusSession = calculateLongestFocusSession(documents)
-//                adapter = FocusAdapter(requireContext(), focusSessions)
-//                recyclerView.adapter = adapter
 
-                val focusSessions = documents.map { document ->
-                    FocusSession(
-                        startTime = document.getLong("startTime") ?: 0,
-                        duration = document.getLong("duration") ?: 0,
-                        status = document.getString("status") ?: "unknown"
-                    )
-                }
-                adapter.updateFocusSessions(focusSessions)
                 // Display the stats
                 view?.findViewById<TextView>(R.id.total_focus_time_text_view)?.text =
                     "Total Time: $totalFocusTime"
@@ -183,7 +171,8 @@ class FocusFragment : Fragment() {
             setFocusMode(totalMinutes)
         }
 
-        materialTimePicker.show(childFragmentManager, "MaterialTimePickerTag")
+//        materialTimePicker.show(childFragmentManager, "MaterialTimePickerTag")
+        materialTimePicker.show(parentFragmentManager, "MaterialTimePickerTag")
     }
 
     private fun setFocusMode(minutes: Int) {
@@ -218,13 +207,22 @@ class FocusFragment : Fragment() {
 
         val startTime = System.currentTimeMillis()
         val endTime = startTime + durationInMinutes * 60 * 1000
-        val sessionInfo = hashMapOf(
-            "timerSetUntil" to timerSetUntil,
-            "duration" to durationInMinutes,
-            "setAt" to System.currentTimeMillis(),
-            "status" to "active", // Add status field
-            "startTime" to startTime,
-            "endTime" to endTime
+        val sessionInfo = FocusSessionDataClass(
+            timerSetUntil = timerSetUntil,
+            duration = durationInMinutes.toLong(),
+            setAt = System.currentTimeMillis(),
+            status = "active",
+            startTime = startTime,
+            endTime = endTime
+        )
+
+        val sessionInfoMap = hashMapOf(
+            "timerSetUntil" to sessionInfo.timerSetUntil,
+            "duration" to sessionInfo.duration,
+            "setAt" to sessionInfo.setAt,
+            "status" to sessionInfo.status,
+            "startTime" to sessionInfo.startTime,
+            "endTime" to sessionInfo.endTime
         )
         // Reference to the user's document in   the 'userTracking' collection
         val userTrackingRef = firestoreDB.collection("userTracking").document(uniqueID)

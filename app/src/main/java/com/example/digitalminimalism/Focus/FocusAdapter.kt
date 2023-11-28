@@ -1,3 +1,5 @@
+package com.example.digitalminimalism.Focus
+
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
@@ -5,12 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.digitalminimalism.FocusFragment
 import com.example.digitalminimalism.R
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-class FocusAdapter(private val context: Context, private var focusSessions: List<FocusFragment.FocusSession>) :
+
+class FocusAdapter(private val context: Context, private var focusSessionDataClasses: List<FocusSessionDataClass>) :
     RecyclerView.Adapter<FocusAdapter.FocusViewHolder>() {
 
     class FocusViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -26,7 +28,7 @@ class FocusAdapter(private val context: Context, private var focusSessions: List
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: FocusViewHolder, position: Int) {
-        val focusSession = focusSessions[position]
+        val focusSession = focusSessionDataClasses[position]
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
@@ -41,10 +43,10 @@ class FocusAdapter(private val context: Context, private var focusSessions: List
         }
     }
 
-    override fun getItemCount(): Int = focusSessions.size
+    override fun getItemCount(): Int = focusSessionDataClasses.size
 
-    fun updateFocusSessions(newSessions: List<FocusFragment.FocusSession>) {
-        focusSessions = newSessions
+    fun updateSessions(newSessions: List<FocusSessionDataClass>) {
+        focusSessionDataClasses = newSessions
         notifyDataSetChanged()
     }
 }
