@@ -46,8 +46,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 .replace(R.id.fragment_container, UsageMonitoringFragment())
                 .commit()
         }
-        val intent = Intent(this, TimerStatusService::class.java)
-        this.startService(intent)
+
     }
 
     private fun hasUsageStatsPermission(): Boolean {

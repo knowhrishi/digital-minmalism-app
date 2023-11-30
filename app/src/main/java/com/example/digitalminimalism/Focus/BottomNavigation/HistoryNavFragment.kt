@@ -77,7 +77,9 @@ class HistoryNavFragment : Fragment() {
                         setAt = document.getLong("setAt") ?: 0,
                         status = document.getString("status") ?: "unknown",
                         startTime = document.getLong("startTime") ?: 0,
-                        endTime = document.getLong("endTime") ?: 0
+                        endTime = document.getLong("endTime") ?: 0,
+                        timerType = document.getString("timerType") ?: "unknown" // Fetch the timerType
+
                     )
                 }
                 adapter.updateSessions(focusSessionDataClasses)

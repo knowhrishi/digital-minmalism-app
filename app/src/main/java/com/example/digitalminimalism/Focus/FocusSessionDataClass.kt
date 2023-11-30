@@ -7,5 +7,6 @@ data class FocusSessionDataClass(
     val setAt: Long = 0,
     val status: String = "unknown",
     val startTime: Long = 0,
-    val endTime: Long = 0
+    val endTime: Long = 0,
+    val timerType: String = "" // Add this line
 )

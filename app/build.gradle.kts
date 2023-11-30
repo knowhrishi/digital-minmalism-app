@@ -61,8 +61,8 @@ dependencies {
     implementation("com.airbnb.android:lottie:3.4.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
     val nav_version = "2.7.5"
-
     // Kotlin
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
+    implementation("com.wajahatkarim:EasyFlipView:3.0.3")
 }

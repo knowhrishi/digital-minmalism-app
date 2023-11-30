@@ -41,4 +41,10 @@
         <item>Last 30 days</item>
         <item>Last 60 minutes</item>
     </string-array>
+    <string-array name="timer_types">
+        <item>Study 📖</item>
+        <item>Work 💼</item>
+        <item>Exercise 🏋️‍♂️</item>
+        <item>Relax 🧘‍</item>
+    </string-array>
 </resources>

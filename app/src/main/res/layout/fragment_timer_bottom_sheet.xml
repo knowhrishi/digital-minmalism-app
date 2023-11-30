@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:constaintLayout="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
+    android:background="@android:color/transparent"
+    android:padding="16dp"
+    app:ignore="NamespaceTypo">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/dialog_rounded_background"
+        android:padding="16dp"
+        android:gravity="center"
+        android:layout_gravity="center">
+
+        <!-- Title and Close Button -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/timerTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1m 28s Timer"
+                android:layout_centerHorizontal="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@android:color/black"/>
+
+            <ImageButton
+                android:id="@+id/closeButton"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Close"/>
+        </RelativeLayout>
+
+        <!-- Circular Timer View (Custom View or ImageView) -->
+        <!-- This is a placeholder for a custom circular progress view or image -->
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/timerProgress"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:indeterminate="false"
+            android:progress="10"
+            app:indicatorSize="160dp"
+            app:trackThickness="15dp"
+            app:indicatorColor="@color/black"
+            app:trackColor="@android:color/darker_gray"
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"/>
+
+        <!-- Timer TextView -->
+        <TextView
+            android:id="@+id/timerTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="1:09"
+            android:textSize="44sp"
+            constaintLayout:layout_constraintTop_toBottomOf="@id/timerProgress"
+            android:textColor="@android:color/black"/>
+        <TextView
+            android:id="@+id/timerTypeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="1:09"
+            android:textSize="24sp"
+            constaintLayout:layout_constraintTop_toBottomOf="@id/timerProgress"
+            android:textColor="@android:color/black"/>
+        <!-- Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_marginTop="150dp">
+
+            <Button
+                android:id="@+id/addMinuteButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="+1:00"
+                android:backgroundTint="@color/black"
+                android:textColor="@color/white"
+                android:layout_marginEnd="8dp"/>
+
+            <Button
+                android:id="@+id/pauseButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Pause"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/design_default_color_primary"/>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

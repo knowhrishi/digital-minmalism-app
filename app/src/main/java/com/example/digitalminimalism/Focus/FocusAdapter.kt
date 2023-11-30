@@ -19,6 +19,7 @@ class FocusAdapter(private val context: Context, private var focusSessionDataCla
         val focusDateTextView: TextView = view.findViewById(R.id.focus_date_text_view)
         val focusTimeTextView: TextView = view.findViewById(R.id.focus_time_text_view)
         val focusStatusTextView: TextView = view.findViewById(R.id.focus_status_text_view)
+        val focusTimerTypeTextView: TextView = view.findViewById(R.id.focus_timer_type_text_view)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FocusViewHolder {
@@ -35,6 +36,7 @@ class FocusAdapter(private val context: Context, private var focusSessionDataCla
         holder.focusDateTextView.text = dateFormat.format(Date(focusSession.startTime))
         holder.focusTimeTextView.text = "${timeFormat.format(Date(focusSession.startTime))} - ${timeFormat.format(Date(focusSession.startTime + focusSession.duration * 60 * 1000))}"
         holder.focusStatusTextView.text = focusSession.status
+        holder.focusTimerTypeTextView.text = focusSession.timerType
 
         when (focusSession.status) {
             "completed" -> holder.focusStatusTextView.setBackgroundResource(R.drawable.green_circular_background)

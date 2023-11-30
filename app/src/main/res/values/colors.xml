@@ -9,5 +9,7 @@
     <color name="black_overlay">#66000000</color>
     <color name="progressIndicatorColor">#8739F6</color> <!-- Example color -->
     <color name="progressIndicatorBackgroundColor">#C7A7FF</color> <!-- Example background color with transparency -->
-
+    <color name="darkThemeBackground">#FFFFFF</color>
+    <color name="progressTrackColor">#03A9F4</color>
+    <color name="buttonColor">#FFFFFF</color>
 </resources>

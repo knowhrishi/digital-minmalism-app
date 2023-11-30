@@ -1,156 +1,78 @@
-
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/darkThemeBackground">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        >
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="16dp">
 
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/timer_type_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:layout_marginBottom="24dp">
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="horizontal">
-                <!-- Total Focus Time Display -->
-                <TextView
-                    android:id="@+id/total_focus_time_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="Total Time: 0" />
-
-                <!-- Average Focus Time Display -->
-                <TextView
-                    android:id="@+id/average_focus_time_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="Average Time: 0" />
-
-                <!-- Longest Focus Session Display -->
-                <TextView
-                    android:id="@+id/longest_focus_session_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="Longest Session: 0"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <!-- Status Indicator -->
-                <TextView
-                    android:id="@+id/status_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="Status: Inactive"/>
-
-                <!-- Streaks Display -->
-                <TextView
-                    android:id="@+id/streaks_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="Current Streak: 0"/>
-
-                <!-- Goal Progress Bar -->
-
-
-                <!-- Reward Badges Display -->
-                <TextView
-                    android:id="@+id/reward_badges_display"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="Badges: None"/>
-            </LinearLayout>
-            <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:id="@+id/goal_progress_bar"
+            <AutoCompleteTextView
+                android:id="@+id/timer_type_dropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxWidth="5dp"
-                android:padding="10dp"
-                android:tooltipText="Goal Progress"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark" />
-            <!-- Countdown Timer and Progress Indicator Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:background="@color/white"
-                app:cardCornerRadius="0dp">
+                android:inputType="none"
+                android:hint="Select Timer Type" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/timer_input_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="40sp"
+            android:text="00h 00m 00s"
+            android:textColor="@color/black"
+            android:layout_marginBottom="24dp"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_margin="5dp">
+        <!-- Number pad for timer input -->
+        <GridLayout
+            android:layout_width="300dp"
+            android:layout_height="400dp"
+            android:columnCount="3"
+            android:rowCount="4"
+            android:layout_marginBottom="24dp"
+            android:id="@+id/number_pad"
+            android:padding="16dp"
+            android:alignmentMode="alignMargins"
+            android:layout_gravity="center_horizontal">
 
-                    <TextView
-                        android:id="@+id/countdown_text_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="No active focus mode."
-                        android:textColor="@color/black"
-                        android:layout_gravity="center"
-                        android:layout_margin="5dp"
-                        android:textSize="20sp" />
+            <!-- Number buttons from 1 to 9 -->
+            <Button android:id="@+id/button1" style="@style/NumberPadButton" android:text="1" android:tag="1" />
+            <Button android:id="@+id/button2" style="@style/NumberPadButton" android:text="2" android:tag="2" />
+            <Button android:id="@+id/button3" style="@style/NumberPadButton" android:text="3" android:tag="3" />
+            <Button android:id="@+id/button4" style="@style/NumberPadButton" android:text="4" android:tag="4" />
+            <Button android:id="@+id/button5" style="@style/NumberPadButton" android:text="5" android:tag="5" />
+            <Button android:id="@+id/button6" style="@style/NumberPadButton" android:text="6" android:tag="6" />
+            <Button android:id="@+id/button7" style="@style/NumberPadButton" android:text="7" android:tag="7" />
+            <Button android:id="@+id/button8" style="@style/NumberPadButton" android:text="8" android:tag="8" />
+            <Button android:id="@+id/button9" style="@style/NumberPadButton" android:text="9" android:tag="9" />
 
-                    <com.google.android.material.progressindicator.CircularProgressIndicator
-                        android:id="@+id/progress_circular"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
+            <!-- Bottom row buttons for 00, 0, and delete -->
+            <Button android:id="@+id/button00" style="@style/NumberPadButton" android:text="00" android:tag="00" />
+            <Button android:id="@+id/button0" style="@style/NumberPadButton" android:text="0" android:tag="0" />
+            <Button android:id="@+id/buttonDelete" style="@style/NumberPadButton" android:text="⌫" android:tag="delete" />
+        </GridLayout>
 
-                        style="@style/CustomCircularProgressIndicator" />
 
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+        <!-- Start Timer Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/start_timer_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:icon="@drawable/ic_play"
+            app:iconGravity="textEnd"
+            app:cornerRadius="100dp"/>
 
-            <!-- Focus Mode Buttons -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/set_focus_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Set Focus Mode"
-                    app:cornerRadius="8dp"
-                    app:icon="@drawable/ic_start_focus_mode"
-                    app:iconGravity="textStart" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/cancel_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="Cancel Focus Mode"
-                    android:visibility="gone"
-                    app:cornerRadius="8dp"
-                    app:icon="@drawable/ic_cancel"
-                    app:iconGravity="textStart" />
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
