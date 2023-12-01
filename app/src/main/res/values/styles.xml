@@ -1,5 +1,12 @@
 <resources>
-
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
+        <!-- Other attributes -->
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:fontFamily">@font/my_font_family</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
     <style name="Widget.Theme.DigitalMinimalism.ActionBar.Fullscreen" parent="Widget.AppCompat.ActionBar">
         <item name="android:background">@color/black_overlay</item>
     </style>
@@ -19,14 +26,10 @@
         <!-- Other customization like trackCornerRadius, indicatorSize can be added here -->
     </style>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Other attributes -->
-        <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:fontFamily">@font/my_font_family</item>
-    </style>
+
     <style name="BottomNavigationTheme" parent="Widget.Design.BottomNavigationView">
-        <item name="itemIconTint">@color/black</item>
-        <item name="itemTextColor">@color/black</item>
+        <item name="itemIconTint">@color/colorPrimaryDark</item>
+        <item name="itemTextColor">@color/colorPrimary</item>
     </style>
 
     <!-- Style for number pad buttons. -->
