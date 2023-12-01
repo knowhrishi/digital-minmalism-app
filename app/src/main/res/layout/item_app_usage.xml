@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="8dp"
+        android:padding="15dp"
         android:id="@+id/ll"
         tools:ignore="MissingConstraints">
 
@@ -14,6 +14,7 @@
         android:id="@+id/icon"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_gravity="center"
         android:layout_marginEnd="16dp" />
 
     <TextView
@@ -21,6 +22,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:layout_gravity="center"
+        android:gravity=""
+        android:fontFamily="@font/poppins_light"
         android:text="app name"
         android:textSize="16sp" />
 
@@ -28,6 +32,8 @@
         android:id="@+id/usage_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_light"
+        android:layout_gravity="center"
         android:text="usage_time"
         android:textSize="16sp" />
     </LinearLayout>

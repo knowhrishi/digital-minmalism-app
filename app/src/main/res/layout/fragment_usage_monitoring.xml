@@ -1,46 +1,117 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context=".Usage.UsageMonitoringFragment">
-        <Spinner
-            android:id="@+id/spinner_time_period"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:entries="@array/time_periods" />
+            android:background="@drawable/lightblue_circular_background"
+            android:orientation="horizontal"
+            android:layout_margin="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/pieChartUsage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            android:padding="5dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:elevation="5dp">
 
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/imageViewTotalTimeTextView"
+                android:src="@drawable/ic_caltoday" />
+
+            <TextView
+                android:id="@+id/totalTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_marginTop="4dp"
+                android:text="Today's Screen Time"
+                android:fontFamily="@font/poppins_light"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </LinearLayout>
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pieChartUsage"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+        <LinearLayout
+            android:id="@+id/llStatistics"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            app:layout_constraintTop_toBottomOf="@id/pieChartUsage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp">
+
+            <!-- TextView for Total Unlocks with a circular background -->
+            <TextView
+                android:id="@+id/textViewTotalUnlocks"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/circular_background_unlocks"
+                android:text="Unlocks"
+                android:elevation="4dp"
+                android:layout_margin="5dp"
+                android:fontFamily="@font/poppins_light"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:paddingVertical="10dp"
+                android:paddingHorizontal="20dp"/>
+
+            <!-- TextView for Total Notifications with a circular background -->
+            <TextView
+                android:id="@+id/textViewTotalNotifications"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_margin="5dp"
+                android:background="@drawable/circular_background_unlocks"
+                android:text="Notifications"
+                android:elevation="4dp"
+                android:fontFamily="@font/poppins_light"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:paddingVertical="10dp"
+                android:paddingHorizontal="20dp"/>
+        </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_apps_usage"
+            android:id="@+id/recyclerViewUsage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/lottieAnimationView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:lottie_url="https://lottie.host/facb0c19-b670-4fc2-b18d-13f897854069/KXuCLByq6S.json"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/llStatistics" />
 
-
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_gravity="right"
-        android:src="@drawable/ic_refresh"/>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

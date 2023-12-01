@@ -2,7 +2,7 @@ package com.example.digitalminimalism
 
 import FocusModeFragment
 import TimerStatusService
-import com.example.digitalminimalism.Analysis.TrendAnalysisFragment
+//import com.example.digitalminimalism.Analysis.TrendAnalysisFragment
 import android.app.AppOpsManager
 import android.content.Context
 import android.content.Intent
@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_usage_tracking -> loadFragment(UsageMonitoringFragment())
-            R.id.nav_trend_analysis -> loadFragment(TrendAnalysisFragment())
+//            R.id.nav_trend_analysis -> loadFragment(TrendAnalysisFragment())
 //            R.id.nav_notification -> loadFragment(NotificationFragment())
             R.id.nav_focus_mode -> loadFragment(FocusModeFragment())
             // Add other cases as necessary
