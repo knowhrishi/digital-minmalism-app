@@ -1,7 +1,6 @@
 package com.example.digitalminimalism
 
 import FocusModeFragment
-import TimerStatusService
 //import com.example.digitalminimalism.Analysis.TrendAnalysisFragment
 import android.app.AppOpsManager
 import android.content.Context
@@ -19,12 +18,13 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
-import android.Manifest
 import android.Manifest.*
 import android.Manifest.permission.*
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContentProviderCompat.requireContext
+import com.example.digitalminimalism.Focus.BottomNavigation.Timer.TimerNavFragment
 import com.example.digitalminimalism.Usage.UsageMonitoringFragment
 
 
@@ -46,6 +46,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 .replace(R.id.fragment_container, UsageMonitoringFragment())
                 .commit()
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = getString(R.string.channel_name)
+            val descriptionText = getString(R.string.channel_description)
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel("channelId", name, importance).apply {
+                description = descriptionText
+            }
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        // remove this later
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, TimerNavFragment())
+            .commit()
 
     }
 

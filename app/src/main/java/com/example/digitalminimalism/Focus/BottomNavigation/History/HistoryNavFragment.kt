@@ -1,4 +1,4 @@
-package com.example.digitalminimalism.Focus.BottomNavigation
+package com.example.digitalminimalism.Focus.BottomNavigation.History
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -20,7 +20,6 @@ import com.example.digitalminimalism.R
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
 
 class HistoryNavFragment : Fragment() {
 

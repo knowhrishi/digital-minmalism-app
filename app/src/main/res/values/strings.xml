@@ -47,4 +47,7 @@
         <item>Exercise 🏋️‍♂️</item>
         <item>Relax 🧘‍</item>
     </string-array>
+    <string name="time_range_format">%1$s - %2$s</string>
+
+
 </resources>

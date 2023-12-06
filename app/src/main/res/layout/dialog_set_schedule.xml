@@ -1,0 +1,124 @@
+<!-- dialog_set_schedule.xml in res/layout/ -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/tvSetScheduleTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Set a schedule"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:gravity="center"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tvStartTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="9:00 AM"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" - "
+            android:layout_marginHorizontal="10dp"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/tvEndTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5:00 PM"
+            android:textSize="18sp"/>
+    </LinearLayout>
+
+    <GridLayout
+        android:id="@+id/gridLayoutDays"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:rowCount="1"
+        android:columnCount="7"
+        android:alignmentMode="alignMargins"
+        android:layout_marginTop="20dp"
+        android:padding="4dp">
+
+        <!-- Create buttons for each day of the week -->
+        <!-- Each button should have an id like btnDay1, btnDay2, ... btnDay7 -->
+        <!-- Example for one day: -->
+        <Button
+            android:id="@+id/btnDaySun"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:padding="5dp"
+            android:layout_margin="2dp"
+            android:text="S"/>
+        <Button
+            android:id="@+id/btnDayMon"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_margin="2dp"
+            android:padding="5dp"
+            android:text="M"/>
+        <Button
+            android:id="@+id/btnDayTue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:layout_columnWeight="1"
+            android:padding="5dp"
+            android:text="T"/>
+        <Button
+            android:id="@+id/btnDayWed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_margin="2dp"
+            android:layout_columnWeight="1"
+            android:text="W"/>
+        <Button
+            android:id="@+id/btnDayThur"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:padding="5dp"
+            android:layout_columnWeight="1"
+            android:text="T"/>
+        <Button
+            android:id="@+id/btnDayFri"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:padding="5dp"
+            android:layout_columnWeight="1"
+            android:text="F"/>
+        <Button
+            android:id="@+id/btnDaySat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:padding="5dp"
+            android:layout_columnWeight="1"
+            android:text="S"/>
+        <!-- Repeat for other days with appropriate ids and text -->
+    </GridLayout>
+
+    <Button
+        android:id="@+id/btnSetSchedule"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Set"
+        android:layout_marginTop="24dp"/>
+</LinearLayout>

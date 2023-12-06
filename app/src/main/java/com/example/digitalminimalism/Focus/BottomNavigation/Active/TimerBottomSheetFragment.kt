@@ -1,3 +1,5 @@
+package com.example.digitalminimalism.Focus.BottomNavigation.Active
+
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.LayoutInflater

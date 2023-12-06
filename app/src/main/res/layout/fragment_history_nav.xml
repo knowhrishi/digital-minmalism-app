@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Focus.BottomNavigation.HistoryNavFragment">
+    tools:context=".Focus.BottomNavigation.History.HistoryNavFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

@@ -1,8 +1,6 @@
-package com.example.digitalminimalism.Focus.BottomNavigation
+package com.example.digitalminimalism.Focus.BottomNavigation.Active
 
-import TimerBottomSheetFragment
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
@@ -18,27 +16,17 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
-import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.digitalminimalism.Focus.FocusAdapter
 import com.example.digitalminimalism.Focus.FocusSessionDataClass
 import com.example.digitalminimalism.Focus.FocusStats
 import com.example.digitalminimalism.R
 import com.example.digitalminimalism.SharedPreferencesManager
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.progressindicator.CircularProgressIndicator
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
-import com.wajahatkarim3.easyflipview.EasyFlipView
 
 class ActiveNavFragment : Fragment() {
     companion object {
@@ -103,13 +91,17 @@ class ActiveNavFragment : Fragment() {
             val totalSeconds = hours * 3600 + minutes * 60 + seconds
             val timerTypeDropdown: AutoCompleteTextView = requireView().findViewById(R.id.timer_type_dropdown)
             val selectedTimerType = timerTypeDropdown.text.toString()
-            Log.d("ActiveNavFragment", "selectedTimerType: $selectedTimerType")
-            // Check if the timer value is valid (non-zero)
-            if (totalSeconds > 0) {
-                setFocusMode(totalSeconds)
+            if (selectedTimerType.isEmpty()) {
+                // No timer type is selected, show a Toast message
+                Toast.makeText(requireContext(), "Please select a type", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(requireContext(), "Please set a valid timer", Toast.LENGTH_SHORT)
-                    .show()
+                // Check if the timer value is valid (non-zero)
+                if (totalSeconds > 0) {
+                    setFocusMode(totalSeconds)
+                } else {
+                    Toast.makeText(requireContext(), "Please set a valid timer", Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
         }
 

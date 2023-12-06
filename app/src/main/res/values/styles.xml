@@ -29,7 +29,7 @@
 
     <style name="BottomNavigationTheme" parent="Widget.Design.BottomNavigationView">
         <item name="itemIconTint">@color/colorPrimaryDark</item>
-        <item name="itemTextColor">@color/colorPrimary</item>
+        <item name="itemTextColor">@color/colorPrimaryDark </item>
     </style>
 
     <!-- Style for number pad buttons. -->
@@ -46,5 +46,5 @@
         <item name="android:layout_columnWeight">1</item>
     </style>
         <!-- Add any other styling you need here -->
-
+    <!-- Style for time selection buttons. -->
 </resources>

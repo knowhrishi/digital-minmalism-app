@@ -2,8 +2,10 @@ package com.example.digitalminimalism.Usage
 // UsageAdapter.kt
 
 import android.annotation.SuppressLint
+import android.app.TimePickerDialog
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,11 +41,40 @@ class UsageAdapter(private val usageStats: List<UsageMonitoringFragment.UsageSta
             val appNameTextView: TextView = view.findViewById(R.id.app_name)
             val totalTimeTextView: TextView = view.findViewById(R.id.usage_time)
             val icon: ImageView = itemView.findViewById(R.id.icon)
+            val timerIcon: ImageView = view.findViewById(R.id.timer_icon)
+            val timerText: TextView = view.findViewById(R.id.timer_text)
 
             appNameTextView.text = usageStat.appName
             totalTimeTextView.text = formatTime(usageStat.totalTime)
             icon.setImageDrawable(getAppIcon(usageStat.packageName, view.context)) // Pass the packageName here
 
+            timerIcon.setOnClickListener {
+                val timePickerDialog = TimePickerDialog(view.context, { _, hourOfDay, minute ->
+                    val totalMinutes = hourOfDay * 60 + minute
+                    scheduleNotification(totalMinutes, usageStat.appName, view.context, timerText)
+                }, 0, 0, true)
+                timePickerDialog.show()
+            }
+
+        }
+        private fun scheduleNotification(minutes: Int, appName: String, context: Context, timerText: TextView) {
+            val notificationScheduler = NotificationScheduler()
+            notificationScheduler.scheduleNotification(minutes, appName, context)
+
+            // Start a countdown timer to update timerText
+            val timer = object : CountDownTimer(minutes * 60 * 1000L, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    val seconds = (millisUntilFinished / 1000) % 60
+                    val minutes = (millisUntilFinished / (1000 * 60)) % 60
+                    val hours = (millisUntilFinished / (1000 * 60 * 60)) % 24
+                    timerText.text = String.format("%02d:%02d:%02d", hours, minutes, seconds)
+                }
+
+                override fun onFinish() {
+                    timerText.text = "00:00:00"
+                }
+            }
+            timer.start()
         }
 
 private fun getAppIcon(packageName: String, context: Context): Drawable? {

@@ -1,72 +1,66 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:layout_margin="5dp">
 
-    <Button
-        android:id="@+id/date_picker_button"
+    <TextView
+        android:id="@+id/textView_focus_mode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select Date"
+        android:text="Focus mode"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/date_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/date_picker_button"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/start_time_picker_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Select Start Time"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_picker_button" />
+    <!-- RecyclerView to show list of apps -->
 
     <TextView
-        android:id="@+id/start_time_text_view"
-        android:layout_width="wrap_content"
+        android:id="@+id/textView_focus_mode_description"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/start_time_picker_button"
-        app:layout_constraintTop_toBottomOf="@+id/date_text_view" />
+        android:layout_marginTop="12dp"
+        android:text="When you need time to focus, you can hide their notifications"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textView_focus_mode"
+        app:layout_constraintTop_toBottomOf="@+id/textView_focus_mode" />
+
 
     <Button
-        android:id="@+id/end_time_picker_button"
-        android:layout_width="wrap_content"
+        android:id="@+id/button_set_schedule"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Select End Time"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="12dp"
+        android:text="Set a schedule"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_time_picker_button" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_focus_mode_description" />
 
     <TextView
-        android:id="@+id/end_time_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/end_time_picker_button"
-        app:layout_constraintTop_toBottomOf="@+id/start_time_text_view" />
-
-    <Button
-        android:id="@+id/set_timer_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Select End Time"
+        android:id="@+id/textView_distracting_apps"
+        android:layout_width="211dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="20dp"
+        android:text="Your Scheduled timers-"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/end_time_picker_button" />
-
+        app:layout_constraintTop_toBottomOf="@+id/button_set_schedule" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_scheduled_timers"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="381dp"
+        android:layout_height="372dp"
         android:divider="@android:color/darker_gray"
         android:dividerHeight="0.5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/set_timer_button" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_distracting_apps"
+        app:layout_constraintVertical_bias="0.043" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

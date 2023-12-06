@@ -3,11 +3,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.digitalminimalism.Focus.BottomNavigation.ActiveNavFragment
-import com.example.digitalminimalism.Focus.BottomNavigation.HistoryNavFragment
+import com.example.digitalminimalism.Focus.BottomNavigation.Active.ActiveNavFragment
+import com.example.digitalminimalism.Focus.BottomNavigation.History.HistoryNavFragment
 import com.example.digitalminimalism.Focus.BottomNavigation.HomeNavFragment
-import com.example.digitalminimalism.Focus.BottomNavigation.ScheduleNavFragment
-import com.example.digitalminimalism.Focus.BottomNavigation.TimerNavFragment
+import com.example.digitalminimalism.Focus.BottomNavigation.Schedule.ScheduleNavFragment
+import com.example.digitalminimalism.Focus.BottomNavigation.Timer.TimerNavFragment
 import com.example.digitalminimalism.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 

@@ -2,12 +2,15 @@ package com.example.digitalminimalism.Usage
 
 import android.annotation.SuppressLint
 import android.app.AppOpsManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.text.SpannableString
@@ -23,6 +26,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.digitalminimalism.R
@@ -66,6 +70,7 @@ class UsageMonitoringFragment : Fragment() {
         if (!hasUsageStatsPermission(view.context)) {
             startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
         }
+
 
         return view
     }
@@ -155,6 +160,8 @@ class UsageMonitoringFragment : Fragment() {
             })
         }
     }
+
+
     private fun getAppSpecificColor(appName: String): Int {
         return when (appName) {
             "Facebook" -> Color.parseColor("#3b5998") // Facebook Blue
@@ -283,7 +290,7 @@ class UsageMonitoringFragment : Fragment() {
 
     // Placeholder function for usage statistics
     @SuppressLint("SimpleDateFormat")
-    private fun getUsageStatistics(startTime: Long, endTime: Long): List<UsageStat> {
+   public fun getUsageStatistics(startTime: Long, endTime: Long): List<UsageStat> {
         val usageStatsManager =
             context?.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
 

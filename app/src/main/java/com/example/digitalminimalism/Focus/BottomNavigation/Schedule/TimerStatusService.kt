@@ -1,3 +1,5 @@
+package com.example.digitalminimalism.Focus.BottomNavigation.Schedule
+
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
@@ -7,7 +9,6 @@ import android.os.Handler
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.google.firebase.firestore.FirebaseFirestore
-import java.util.*
 
 class TimerStatusService : Service() {
 
