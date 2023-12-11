@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:constaintLayout="http://schemas.android.com/apk/res-auto"
@@ -8,99 +8,121 @@
     android:padding="16dp"
     app:ignore="NamespaceTypo">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@drawable/dialog_rounded_background"
-        android:padding="16dp"
-        android:gravity="center"
-        android:layout_gravity="center">
+
 
         <!-- Title and Close Button -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/timerTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1m 28s Timer"
-                android:layout_centerHorizontal="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="@android:color/black"/>
-
-            <ImageButton
-                android:id="@+id/closeButton"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_alignParentEnd="true"
-                android:src="@android:drawable/ic_menu_close_clear_cancel"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Close"/>
-        </RelativeLayout>
-
-        <!-- Circular Timer View (Custom View or ImageView) -->
+    <!-- Circular Timer View (Custom View or ImageView) -->
         <!-- This is a placeholder for a custom circular progress view or image -->
-        <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:id="@+id/timerProgress"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:indeterminate="false"
-            android:progress="10"
-            app:indicatorSize="160dp"
-            app:trackThickness="15dp"
-            app:indicatorColor="@color/black"
-            app:trackColor="@android:color/darker_gray"
-            android:layout_gravity="center"
-            android:layout_marginTop="24dp"/>
 
-        <!-- Timer TextView -->
-        <TextView
-            android:id="@+id/timerTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="1:09"
-            android:textSize="44sp"
-            constaintLayout:layout_constraintTop_toBottomOf="@id/timerProgress"
-            android:textColor="@android:color/black"/>
-        <TextView
-            android:id="@+id/timerTypeTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="1:09"
-            android:textSize="24sp"
-            constaintLayout:layout_constraintTop_toBottomOf="@id/timerProgress"
-            android:textColor="@android:color/black"/>
-        <!-- Buttons -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center"
-            android:layout_marginTop="150dp">
+    <!-- Timer TextView -->
 
-            <Button
-                android:id="@+id/addMinuteButton"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="+1:00"
-                android:backgroundTint="@color/black"
-                android:textColor="@color/white"
-                android:layout_marginEnd="8dp"/>
 
-            <Button
-                android:id="@+id/pauseButton"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="Pause"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/design_default_color_primary"/>
-        </LinearLayout>
-    </LinearLayout>
-</FrameLayout>
+    <ImageView
+        android:id="@+id/closeButton"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
+        android:contentDescription="Close"
+        android:src="@drawable/ic_close"
+        constaintLayout:layout_constraintBottom_toBottomOf="parent"
+        constaintLayout:layout_constraintEnd_toEndOf="parent"
+        constaintLayout:layout_constraintHorizontal_bias="0.958"
+        constaintLayout:layout_constraintStart_toStartOf="parent"
+        constaintLayout:layout_constraintTop_toTopOf="parent"
+        constaintLayout:layout_constraintVertical_bias="0.048" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/timerProgress"
+        android:layout_width="179dp"
+        android:layout_height="182dp"
+        android:layout_gravity="center"
+        android:indeterminate="false"
+        android:progress="10"
+        app:trackCornerRadius="10dp"
+        app:indicatorColor="@color/black"
+        app:indicatorSize="200dp"
+        app:trackColor="@android:color/darker_gray"
+        app:trackThickness="15dp"
+        constaintLayout:layout_constraintBottom_toBottomOf="parent"
+        constaintLayout:layout_constraintEnd_toEndOf="parent"
+        constaintLayout:layout_constraintHorizontal_bias="0.497"
+        constaintLayout:layout_constraintStart_toStartOf="parent"
+        constaintLayout:layout_constraintTop_toTopOf="parent"
+        constaintLayout:layout_constraintVertical_bias="0.246" />
+
+    <!-- Buttons -->
+    <TextView
+        android:id="@+id/timerTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="68dp"
+        android:gravity="center"
+        android:text="1:09"
+        android:textColor="@android:color/black"
+        android:textSize="34sp"
+        constaintLayout:layout_constraintBottom_toBottomOf="parent"
+        constaintLayout:layout_constraintEnd_toEndOf="parent"
+        constaintLayout:layout_constraintStart_toStartOf="parent"
+        constaintLayout:layout_constraintTop_toBottomOf="@id/timerProgress"
+        constaintLayout:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/timerTypeTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="timerTypeTextView"
+        android:textColor="@android:color/black"
+        android:textSize="22sp"
+        constaintLayout:layout_constraintEnd_toEndOf="parent"
+        constaintLayout:layout_constraintStart_toStartOf="parent"
+        constaintLayout:layout_constraintTop_toBottomOf="@id/timerProgress" />
+
+    <Button
+        android:id="@+id/buttonCancelTimer"
+        android:layout_width="96dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="24dp"
+        android:layout_weight="1"
+        android:backgroundTint="@color/black"
+        android:text="Cancel"
+        android:textColor="@color/white"
+        constaintLayout:layout_constraintBottom_toBottomOf="parent"
+        constaintLayout:layout_constraintEnd_toEndOf="parent"
+        constaintLayout:layout_constraintHorizontal_bias="0.205"
+        constaintLayout:layout_constraintStart_toStartOf="parent"
+        constaintLayout:layout_constraintTop_toBottomOf="@+id/timerTextView"
+        constaintLayout:layout_constraintVertical_bias="0.149" />
+
+    <Button
+        android:id="@+id/pauseButton"
+        android:layout_width="96dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="24dp"
+        android:layout_weight="1"
+        android:backgroundTint="@color/design_default_color_primary"
+        android:text="Pause"
+        android:textColor="@color/white"
+        constaintLayout:layout_constraintBottom_toBottomOf="parent"
+        constaintLayout:layout_constraintEnd_toEndOf="parent"
+        constaintLayout:layout_constraintHorizontal_bias="0.828"
+        constaintLayout:layout_constraintStart_toStartOf="parent"
+        constaintLayout:layout_constraintTop_toBottomOf="@+id/timerTextView"
+        constaintLayout:layout_constraintVertical_bias="0.141" />
+
+    <TextView
+        android:id="@+id/timerTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="1m 28s Timer"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@android:color/black"
+        constaintLayout:layout_constraintBottom_toTopOf="@+id/timerTypeTextView"
+        constaintLayout:layout_constraintEnd_toEndOf="parent"
+        constaintLayout:layout_constraintStart_toStartOf="parent"
+        constaintLayout:layout_constraintTop_toTopOf="parent"
+        constaintLayout:layout_constraintVertical_bias="0.165" />
+</androidx.constraintlayout.widget.ConstraintLayout>

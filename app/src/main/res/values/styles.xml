@@ -1,12 +1,13 @@
 <resources>
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
-        <!-- Other attributes -->
-        <item name="android:textColorPrimary">@color/black</item>
-        <item name="android:fontFamily">@font/my_font_family</item>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fontFamily">@font/my_font_family</item>
     </style>
+
     <style name="Widget.Theme.DigitalMinimalism.ActionBar.Fullscreen" parent="Widget.AppCompat.ActionBar">
         <item name="android:background">@color/black_overlay</item>
     </style>
@@ -17,6 +18,7 @@
 
 
     <style name="Base.Widget.MaterialComponents.TextView" parent="Widget.AppCompat.TextView" />
+
     <style name="Widget.MaterialComponents.TextView" parent="Base.Widget.MaterialComponents.TextView" />
 
     <style name="CustomCircularProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator">
@@ -29,22 +31,23 @@
 
     <style name="BottomNavigationTheme" parent="Widget.Design.BottomNavigationView">
         <item name="itemIconTint">@color/colorPrimaryDark</item>
-        <item name="itemTextColor">@color/colorPrimaryDark </item>
+        <item name="itemTextColor">@color/colorPrimaryDark</item>
     </style>
 
     <!-- Style for number pad buttons. -->
     <style name="NumberPadButton" parent="Widget.AppCompat.Button">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">0dp</item>
-        <item name="android:layout_margin">4dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:padding">4dp</item>
         <item name="android:layout_gravity">fill</item>
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:textColor">#FFFFFF</item> <!-- White text -->
         <item name="android:background">@drawable/button_rounded_background</item>
         <!-- Add any other styling you need here -->
         <item name="android:layout_rowWeight">1</item>
         <item name="android:layout_columnWeight">1</item>
     </style>
-        <!-- Add any other styling you need here -->
+    <!-- Add any other styling you need here -->
     <!-- Style for time selection buttons. -->
 </resources>

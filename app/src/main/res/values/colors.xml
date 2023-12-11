@@ -19,10 +19,23 @@
     <color name="pastel_blue">#AEC6CF</color>
     <color name="pastel_purple">#B39EB5</color>
 
-    <color name="colorPrimary">#f7d1cd</color> <!-- Pastel orange -->
-    <color name="colorPrimaryDark">#735d78</color> <!-- Pastel green -->
-    <color name="colorAccent">#d1b3c4</color> <!-- Pastel blue -->
+    <color name="colorPrimary">#457b9d</color>
+    <color name="colorPrimaryDark">#1d3557</color>
+    <color name="colorAccent">#a8dadc</color>
+    <color name="colorSecondary">#e63946</color>
     <!-- Other colors... -->
+    <color name="backgroundAll">#f1faee</color>
+
+    <color name="blue_gray_50">#ECEFF1</color>
+    <color name="blue_gray_100">#CFD8DC</color>
+    <color name="blue_gray_200">#B0BEC5</color>
+    <color name="blue_gray_300">#90A4AE</color>
+    <color name="blue_gray_400">#78909C</color>
+    <color name="blue_gray_500">#607D8B</color>
+    <color name="blue_gray_600">#546E7A</color>
+    <color name="blue_gray_700">#455A64</color>
+    <color name="blue_gray_800">#37474F</color>
+    <color name="blue_gray_900">#263238</color>
 
 
 </resources>

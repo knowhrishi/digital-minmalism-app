@@ -1,79 +1,172 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/darkThemeBackground">
+    android:background="#f1faee">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="16dp">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/timer_type_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="match_parent"
+    <!-- Number pad for timer input -->
+
+
+    <!-- Start Timer Button -->
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/timer_type_layout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="266dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="56dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <AutoCompleteTextView
+            android:id="@+id/timer_type_dropdown"
+            android:layout_width="264dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp">
-
-            <AutoCompleteTextView
-                android:id="@+id/timer_type_dropdown"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
-                android:inputType="none"
-                android:hint="Select Timer Type" />
-        </com.google.android.material.textfield.TextInputLayout>
-        <TextView
-            android:id="@+id/timer_input_display"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="40sp"
+            android:hint="Select Timer Type"
+            android:fontFamily="@font/poppins_medium"
+            android:inputType="none"
             android:textColor="@color/colorPrimaryDark"
-            android:text="00h 00m 00s"
-            android:layout_marginBottom="24dp"/>
+            tools:layout_editor_absoluteX="71dp"
+            tools:layout_editor_absoluteY="47dp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Number pad for timer input -->
-        <GridLayout
-            android:layout_width="300dp"
-            android:layout_height="400dp"
-            android:columnCount="3"
-            android:rowCount="4"
-            android:layout_marginBottom="24dp"
-            android:id="@+id/number_pad"
-            android:padding="16dp"
-            android:alignmentMode="alignMargins"
-            android:layout_gravity="center_horizontal">
+    <TextView
+        android:id="@+id/timer_input_display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="00h 00m 00s"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timer_type_layout" />
 
-            <!-- Number buttons from 1 to 9 -->
-            <Button android:id="@+id/button1" style="@style/NumberPadButton" android:text="1" android:tag="1" />
-            <Button android:id="@+id/button2" style="@style/NumberPadButton" android:text="2" android:tag="2" />
-            <Button android:id="@+id/button3" style="@style/NumberPadButton" android:text="3" android:tag="3" />
-            <Button android:id="@+id/button4" style="@style/NumberPadButton" android:text="4" android:tag="4" />
-            <Button android:id="@+id/button5" style="@style/NumberPadButton" android:text="5" android:tag="5" />
-            <Button android:id="@+id/button6" style="@style/NumberPadButton" android:text="6" android:tag="6" />
-            <Button android:id="@+id/button7" style="@style/NumberPadButton" android:text="7" android:tag="7" />
-            <Button android:id="@+id/button8" style="@style/NumberPadButton" android:text="8" android:tag="8" />
-            <Button android:id="@+id/button9" style="@style/NumberPadButton" android:text="9" android:tag="9" />
+    <GridLayout
+        android:id="@+id/number_pad"
+        android:layout_width="297dp"
+        android:layout_height="381dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:alignmentMode="alignMargins"
+        android:columnCount="3"
+        android:padding="16dp"
+        android:rowCount="4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timer_input_display">
 
-            <!-- Bottom row buttons for 00, 0, and delete -->
-            <Button android:id="@+id/button00" style="@style/NumberPadButton" android:text="00" android:tag="00" />
-            <Button android:id="@+id/button0" style="@style/NumberPadButton" android:text="0" android:tag="0" />
-            <Button android:id="@+id/buttonDelete" style="@style/NumberPadButton" android:text="⌫" android:tag="delete" />
-        </GridLayout>
+        <!-- Number buttons from 1 to 9 -->
+        <Button
+            android:id="@+id/button1"
+            style="@style/NumberPadButton"
+            android:tag="1"
+            android:fontFamily="@font/poppins_medium"
+            android:text="1" />
+
+        <Button
+            android:id="@+id/button2"
+            style="@style/NumberPadButton"
+            android:tag="2"
+            android:fontFamily="@font/poppins_medium"
+            android:text="2" />
+
+        <Button
+            android:id="@+id/button3"
+            style="@style/NumberPadButton"
+            android:fontFamily="@font/poppins_medium"
+            android:tag="3"
+            android:text="3" />
+
+        <Button
+            android:id="@+id/button4"
+            style="@style/NumberPadButton"
+            android:fontFamily="@font/poppins_medium"
+            android:tag="4"
+            android:text="4" />
+
+        <Button
+            android:id="@+id/button5"
+            style="@style/NumberPadButton"
+            android:fontFamily="@font/poppins_medium"
+            android:tag="5"
+            android:text="5" />
+
+        <Button
+            android:id="@+id/button6"
+            style="@style/NumberPadButton"
+            android:fontFamily="@font/poppins_medium"
+            android:tag="6"
+            android:text="6" />
+
+        <Button
+            android:id="@+id/button7"
+            style="@style/NumberPadButton"
+            android:fontFamily="@font/poppins_medium"
+            android:tag="7"
+            android:text="7" />
+
+        <Button
+            android:id="@+id/button8"
+            style="@style/NumberPadButton"
+            android:fontFamily="@font/poppins_medium"
+            android:tag="8"
+            android:text="8" />
+
+        <Button
+            android:id="@+id/button9"
+            style="@style/NumberPadButton"
+            android:fontFamily="@font/poppins_medium"
+            android:tag="9"
+            android:text="9" />
+
+        <!-- Bottom row buttons for 00, 0, and delete -->
+        <Button
+            android:id="@+id/button00"
+            style="@style/NumberPadButton"
+            android:fontFamily="@font/poppins_medium"
+            android:tag="00"
+            android:text="00" />
+
+        <Button
+            android:id="@+id/button0"
+            style="@style/NumberPadButton"
+            android:fontFamily="@font/poppins_medium"
+            android:tag="0"
+            android:text="0" />
+
+        <Button
+            android:id="@+id/buttonDelete"
+            style="@style/NumberPadButton"
+            android:fontFamily="@font/poppins_medium"
+            android:tag="delete"
+            android:text="⌫" />
+    </GridLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/start_timer_button"
+        style="@style/NumberPadButton"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="31dp"
+        android:visibility="invisible"
+        app:icon="@drawable/ic_play"
+        app:iconGravity="textEnd"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/number_pad"
+        app:layout_constraintVertical_bias="0.184" />
 
 
-        <!-- Start Timer Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/start_timer_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:icon="@drawable/ic_play"
-            app:iconGravity="textEnd"
-            app:cornerRadius="100dp"/>
 
-    </LinearLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

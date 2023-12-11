@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#FFFFFF" /> <!-- Change this to your desired color -->
+    <solid android:color="@color/colorAccent" /> <!-- Change this to your desired color -->
     <corners android:radius="4dp" /> <!-- Change this to your desired corner radius -->
     <stroke android:color="@android:color/transparent" android:width="2dp"/> <!-- Transparent border when not pressed -->
 </shape>

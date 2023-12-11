@@ -8,22 +8,17 @@
 
         <item
             android:id="@+id/nav_usage_tracking"
-            android:icon="@drawable/baseline_pie_chart_24"
+            android:icon="@drawable/ic_nav_usage_tracking"
             android:title="Usage Tracking"/>
 
         <item
-            android:id="@+id/nav_trend_analysis"
-            android:icon="@drawable/baseline_analytics_24"
-            android:title="Trend Analysis"/>
-
-        <item
-            android:id="@+id/nav_notification"
-            android:icon="@drawable/baseline_notifications_active_24"
-            android:title="Notification Scheduling"/>
+            android:id="@+id/nav_challenges"
+            android:icon="@drawable/ic_nav_challenge"
+            android:title="Challenges"/>
 
         <item
             android:id="@+id/nav_focus_mode"
-            android:icon="@drawable/baseline_do_not_disturb_on_total_silence_24"
+            android:icon="@drawable/ic_nav_focus_mode"
             android:title="Focus Mode"/>
 
     </group>

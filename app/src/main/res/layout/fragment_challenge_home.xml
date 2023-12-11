@@ -1,0 +1,30 @@
+<!-- res/layout/fragment_challenge_home.xml -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundAll">
+
+    <TextView
+        android:id="@+id/tvChooseChallenge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose Your Challenge"
+        android:fontFamily="@font/poppins_black"
+        android:textSize="24sp"
+        android:textColor="#000"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="24dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewChallenges"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="80dp"
+        android:padding="16dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:clipToPadding="false" />
+
+</FrameLayout>

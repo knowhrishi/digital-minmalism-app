@@ -2,21 +2,27 @@ package com.example.digitalminimalism.Focus.BottomNavigation.Active
 
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import com.example.digitalminimalism.R
+import com.example.digitalminimalism.SharedPreferencesManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.progressindicator.CircularProgressIndicator
+import com.google.firebase.firestore.FirebaseFirestore
 
 class TimerBottomSheetFragment(private val remainingTime: Long, private val fullTime: Long,  private val timerType: String) : BottomSheetDialogFragment() {
 
     private var countDownTimer: CountDownTimer? = null
     private lateinit var timerProgress: CircularProgressIndicator
     private lateinit var timerTextView: TextView
-
+    private lateinit var uniqueID: String
+    private val firestoreDB: FirebaseFirestore = FirebaseFirestore.getInstance()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_timer_bottom_sheet, container, false)
@@ -36,7 +42,8 @@ class TimerBottomSheetFragment(private val remainingTime: Long, private val full
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        uniqueID =
+            Settings.Secure.getString(requireContext().contentResolver, Settings.Secure.ANDROID_ID)
         timerTextView = view.findViewById(R.id.timerTextView)
         val timerTitle: TextView = view.findViewById(R.id.timerTitle) // Get reference to timerTitle
 
@@ -44,7 +51,7 @@ class TimerBottomSheetFragment(private val remainingTime: Long, private val full
         timerTypeTextView.text = timerType
 
         val pauseButton: Button = view.findViewById(R.id.pauseButton)
-        val addButton: Button = view.findViewById(R.id.addMinuteButton)
+        val addButton: Button = view.findViewById(R.id.buttonCancelTimer)
         timerProgress = view.findViewById(R.id.timerProgress)
 
         // Set the max value for the progress bar
@@ -74,6 +81,28 @@ class TimerBottomSheetFragment(private val remainingTime: Long, private val full
 
         addButton.setOnClickListener {
             // Handle add time button click
+        }
+
+        val closeButton: ImageView = view.findViewById(R.id.closeButton)
+        closeButton.setOnClickListener {
+            countDownTimer?.cancel()
+            dismiss()
+
+            // Get the document ID of the current timer from the shared preferences
+            val currentTimerDocId = SharedPreferencesManager.getTimerDocId()
+
+            // Update the status of the current timer in Firestore to "cancel"
+            if (currentTimerDocId != null) {
+                val userTrackingRef = firestoreDB.collection("userTracking").document(uniqueID)
+                userTrackingRef.collection("focusModeInfo").document(currentTimerDocId)
+                    .update("status", "cancelled")
+                    .addOnSuccessListener {
+                        Log.d("ActiveNavFragment", "Timer status successfully updated to 'cancel' in Firestore.")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e("ActiveNavFragment", "Failed to update timer status in Firestore: ${e.message}")
+                    }
+            }
         }
     }
 

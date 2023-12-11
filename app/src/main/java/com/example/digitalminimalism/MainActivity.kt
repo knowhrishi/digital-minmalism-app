@@ -24,6 +24,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.example.digitalminimalism.Challenges.ChallengeFragment
 import com.example.digitalminimalism.Focus.BottomNavigation.Timer.TimerNavFragment
 import com.example.digitalminimalism.Usage.UsageMonitoringFragment
 
@@ -58,10 +59,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             notificationManager.createNotificationChannel(channel)
         }
 
-        // remove this later
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, TimerNavFragment())
-            .commit()
+//        // remove this later
+//        supportFragmentManager.beginTransaction()
+//            .replace(R.id.fragment_container, TimerNavFragment())
+//            .commit()
 
     }
 
@@ -101,6 +102,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
         val navigationView: NavigationView = findViewById(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this)
+        navigationView.setItemIconTintList(null);
 
         val toggle = ActionBarDrawerToggle(
             this, drawerLayout, toolbar,
@@ -114,7 +116,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.nav_usage_tracking -> loadFragment(UsageMonitoringFragment())
 //            R.id.nav_trend_analysis -> loadFragment(TrendAnalysisFragment())
-//            R.id.nav_notification -> loadFragment(NotificationFragment())
+            R.id.nav_challenges -> loadFragment(ChallengeFragment())
             R.id.nav_focus_mode -> loadFragment(FocusModeFragment())
             // Add other cases as necessary
         }

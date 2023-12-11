@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/bottom_nav_challenge_home"
+        android:icon="@drawable/ic_home"
+        android:title="Home" />
+    <item
+        android:id="@+id/bottom_nav_challenge_challenge"
+        android:icon="@drawable/ic_nav_challenge"
+        android:title="Challenge" />
+    <!-- Add other items as needed -->
+
+    <item
+        android:id="@+id/bottom_nav_challenge_settings"
+        android:icon="@drawable/ic_other"
+        android:title="Settings" />
+
+    <!-- Add other items as needed -->
+</menu>
