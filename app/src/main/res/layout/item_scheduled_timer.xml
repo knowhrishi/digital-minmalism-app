@@ -1,179 +1,194 @@
 <!-- item_scheduled_timer.xml -->
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
-    <!-- Clock Icon -->
+    android:layout_margin="5dp"
+    app:cardElevation="5dp">
 
-    <!-- Vertical Divider -->
-
-    <!-- Bin Icon -->
-
-
-    <ImageView
-        android:id="@+id/imageView_clock"
-        android:layout_width="29dp"
-        android:layout_height="28dp"
-        android:layout_marginEnd="6dp"
-        android:src="@drawable/ic_clock"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/text_view_time_range"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:id="@+id/view_divider"
-        android:layout_width="1dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="13dp"
-        android:background="@android:color/darker_gray"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageView_bin"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <ImageView
-        android:id="@+id/imageView_bin"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/ic_delete"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.958"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.488" />
-
-    <TextView
-        android:id="@+id/text_view_time_range"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="text_view_time_range"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="39dp" />
+        android:background="@color/backgroundAll"
+        android:padding="10dp">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/weekdays_layout"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="7dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView_clock"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_time_range"
-        app:layout_constraintVertical_bias="0.0">
-
-        <TextView
-            android:id="@+id/day_sun"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_margin="5dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/circle_background_notselected"
-            android:gravity="center"
-            android:text="S"
-            android:textSize="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/day_mon"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_time_range"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <TextView
-            android:id="@+id/day_mon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_margin="5dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/circle_background_notselected"
-            android:gravity="center"
-            android:text="M"
-            android:textSize="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/day_tue"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_time_range"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <TextView
-            android:id="@+id/day_tue"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_margin="5dp"
-            android:layout_marginTop="7dp"
-            android:layout_marginEnd="9dp"
-            android:background="@drawable/circle_background_notselected"
-            android:gravity="center"
-            android:text="T"
-            android:textSize="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/day_wed"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_time_range" />
-
-        <TextView
-            android:id="@+id/day_sat"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_margin="5dp"
-            android:layout_marginTop="6dp"
-            android:background="@drawable/circle_background_notselected"
-            android:gravity="center"
-            android:text="S"
-            android:textSize="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_time_range"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="210dp" />
-
-        <TextView
-            android:id="@+id/day_fri"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_margin="5dp"
-            android:layout_marginTop="6dp"
-            android:background="@drawable/circle_background_notselected"
-            android:gravity="center"
-            android:text="F"
-            android:textSize="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/day_sat"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_time_range" />
-
-        <TextView
-            android:id="@+id/day_thur"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_margin="5dp"
-            android:layout_marginTop="6dp"
+        <ImageView
+            android:id="@+id/imageView_clock"
+            android:layout_width="29dp"
+            android:layout_height="28dp"
             android:layout_marginEnd="6dp"
-            android:background="@drawable/circle_background_notselected"
-            android:gravity="center"
-            android:text="T"
-            android:textSize="10dp"
+            android:src="@drawable/ic_clock"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/day_fri"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_time_range" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.016"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/view_divider"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="13dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView_bin"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ImageView
+            android:id="@+id/imageView_bin"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_delete"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.958"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.488" />
 
         <TextView
-            android:id="@+id/day_wed"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_margin="5dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/circle_background_notselected"
-            android:gravity="center"
-            android:text="W"
-            android:textSize="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/day_thur"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_time_range" />
-    </LinearLayout>
-    <!-- Repeat for the other days of the week (M, T, W, T, F, S) -->
+            android:id="@+id/text_view_time_range"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="text_view_time_range"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toStartOf="@+id/view_divider"
+            app:layout_constraintStart_toEndOf="@+id/imageView_clock"
+            app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:id="@+id/weekdays_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginRight="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/view_divider"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/imageView_clock"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_time_range"
+            app:layout_constraintVertical_bias="0.0">
+
+            <TextView
+                android:id="@+id/day_sun"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_margin="5dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/circle_background_notselected"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:text="S"
+                android:textSize="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/day_mon"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_time_range"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/day_mon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_margin="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/circle_background_notselected"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:text="M"
+                android:textSize="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/day_tue"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_time_range"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/day_tue"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_margin="5dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="9dp"
+                android:background="@drawable/circle_background_notselected"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:text="T"
+                android:textSize="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/day_wed"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_time_range" />
+
+            <TextView
+                android:id="@+id/day_sat"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_margin="5dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/circle_background_notselected"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:text="S"
+                android:textSize="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_time_range"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="210dp" />
+
+            <TextView
+                android:id="@+id/day_fri"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_margin="5dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/circle_background_notselected"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:text="F"
+                android:textSize="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/day_sat"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_time_range" />
+
+            <TextView
+                android:id="@+id/day_thur"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_margin="5dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/circle_background_notselected"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:text="T"
+                android:textSize="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/day_fri"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_time_range" />
+
+            <TextView
+                android:id="@+id/day_wed"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_margin="5dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/circle_background_notselected"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:text="W"
+                android:textSize="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/day_thur"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_time_range" />
+        </LinearLayout>
+        <!-- Repeat for the other days of the week (M, T, W, T, F, S) -->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

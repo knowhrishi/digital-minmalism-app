@@ -1,26 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn = "navigation_view">
+    tools:showIn="navigation_view">
 
-    <group
-        android:checkableBehavior="single">
+    <group android:checkableBehavior="single">
 
         <item
             android:id="@+id/nav_usage_tracking"
             android:icon="@drawable/ic_nav_usage_tracking"
-            android:title="Usage Tracking"/>
-
-        <item
-            android:id="@+id/nav_challenges"
-            android:icon="@drawable/ic_nav_challenge"
-            android:title="Challenges"/>
+            android:title="Usage Tracking" />
 
         <item
             android:id="@+id/nav_focus_mode"
             android:icon="@drawable/ic_nav_focus_mode"
-            android:title="Focus Mode"/>
+            android:title="Focus Mode" />
 
+
+        <item
+            android:id="@+id/nav_challenges"
+            android:icon="@drawable/ic_nav_challenge"
+            android:title="Challenges" />
+
+
+        <item
+            android:id="@+id/nav_digital_declutter"
+            android:icon="@drawable/ic_nav_digital_declutter"
+            android:title="Digital Declutter" />
+
+        <item
+            android:id="@+id/nav_resources_articles"
+            android:icon="@drawable/ic_nav_resources_articles"
+            android:title="Resources and Articles" />
     </group>
 
 </menu>

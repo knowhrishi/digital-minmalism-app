@@ -50,4 +50,8 @@
     </style>
     <!-- Add any other styling you need here -->
     <!-- Style for time selection buttons. -->
+
+    <style name="NavDrawerTextStyle" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">@font/poppins_medium</item>
+    </style>
 </resources>

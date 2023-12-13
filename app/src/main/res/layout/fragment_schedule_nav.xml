@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundAll"
     android:layout_margin="5dp">
 
     <TextView
@@ -10,6 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Focus mode"
+        android:textColor="@color/colorPrimaryDark"
+        android:fontFamily="@font/poppins_black"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,6 +27,8 @@
         android:text="When you need time to focus, you can hide their notifications"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         app:layout_constraintEnd_toEndOf="parent"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/textView_focus_mode"
         app:layout_constraintTop_toBottomOf="@+id/textView_focus_mode" />
@@ -36,23 +41,29 @@
         android:layout_marginStart="120dp"
         android:layout_marginTop="12dp"
         android:text="Set a schedule"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:background="@drawable/square_button"
+        android:fontFamily="@font/poppins_medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_focus_mode_description" />
 
     <TextView
         android:id="@+id/textView_distracting_apps"
-        android:layout_width="211dp"
+        android:layout_width="311dp"
         android:layout_height="23dp"
         android:layout_marginTop="20dp"
-        android:text="Your Scheduled timers-"
+        android:text="Your Scheduled timers: "
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="@color/colorPrimaryDark"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_set_schedule" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_scheduled_timers"
-        android:layout_width="381dp"
-        android:layout_height="372dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="5dp"
         android:divider="@android:color/darker_gray"
         android:dividerHeight="0.5dp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/colorAccent"
+    android:background="@color/backgroundAll"
     android:layout_height="match_parent"
     android:gravity="center">
 
@@ -13,7 +13,7 @@
         android:layout_width="300dp"
         android:layout_height="354dp"
         app:cardCornerRadius="10dp"
-        app:cardBackgroundColor="#EDE7F6"
+        app:cardBackgroundColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +43,7 @@
                 android:progress="60"
                 app:indicatorColor="@color/colorPrimaryDark"
                 app:indicatorSize="180dp"
-                app:trackColor="@color/colorAccent"
+                app:trackColor="@color/backgroundAll"
                 app:trackCornerRadius="10dp"
                 app:trackThickness="18dp"
                 android:layout_gravity="center"/>
@@ -65,7 +65,7 @@
         android:layout_width="300dp"
         android:layout_height="74dp"
         android:padding="5dp"
-        app:cardBackgroundColor="#EDE7F6"
+        app:cardBackgroundColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

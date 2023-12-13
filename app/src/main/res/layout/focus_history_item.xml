@@ -3,20 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
     app:cardCornerRadius="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp">
+        android:paddingVertical="8dp"
+        android:background="@color/backgroundAll">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/focus_date_text_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/focus_date_text_view"
+            android:textSize="15dp"
+            android:fontFamily="@font/poppins_medium"
             android:textAppearance="?attr/textAppearanceBody1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -26,8 +28,9 @@
             android:id="@+id/focus_timer_type_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:text="focus_timer_type_text_view"
+            android:textSize="15dp"
+            android:fontFamily="@font/poppins_medium"
             android:textAppearance="?attr/textAppearanceBody1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -38,18 +41,22 @@
             android:id="@+id/focus_time_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:text="@string/focus_time_text_view"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="15dp"
             android:textAppearance="?attr/textAppearanceBody1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/focus_timer_type_text_view" />
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/focus_status_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="38dp"
+            android:layout_marginTop="25dp"
+            android:textSize="12dp"
+            android:fontFamily="@font/poppins_medium"
             android:background="@drawable/red_circular_background"
             android:padding="5dp"
             android:text="@string/focus_status_text_view"

@@ -1,6 +1,8 @@
 package com.example.digitalminimalism.Challenges.BottomNav
 
-import OneWeekChallengeActivity
+
+
+
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -34,10 +36,10 @@ class ChallengeHomeFragment : Fragment(), ChallengeAdapter.ChallengeClickListene
 
         return view
     }
-    override fun onChallengeClick(challenge: ChallengeHomeFragment.Challenge) {
+    override fun onChallengeClick(challenge: Challenge) {
         val intent = when (challenge.name) {
-            "1 Week Challenge" -> Intent(context, OneWeekChallengeActivity::class.java)
-//            "Challenge 2" -> Intent(context, ActivityForChallenge2::class.java)
+            "1 Week Challenge" -> Intent().setClassName(requireContext(), "com.example.digitalminimalism.Challenges.BottomNav.OneWeekChallengeActivity")
+            // "Challenge 2" -> Intent().setClassName(requireContext(), "com.example.digitalminimalism.Challenges.BottomNav.ActivityForChallenge2")
             else -> null
         }
         intent?.let {
@@ -45,4 +47,5 @@ class ChallengeHomeFragment : Fragment(), ChallengeAdapter.ChallengeClickListene
             startActivity(it)
         }
     }
+
 }

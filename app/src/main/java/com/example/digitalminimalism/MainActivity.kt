@@ -23,7 +23,9 @@ import android.Manifest.permission.*
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
+import android.widget.TextView
 import androidx.annotation.RequiresApi
+import com.anychart.data.View
 import com.example.digitalminimalism.Challenges.ChallengeFragment
 import com.example.digitalminimalism.Focus.BottomNavigation.Timer.TimerNavFragment
 import com.example.digitalminimalism.Usage.UsageMonitoringFragment
@@ -55,7 +57,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val channel = NotificationChannel("channelId", name, importance).apply {
                 description = descriptionText
             }
-            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val notificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
 
@@ -96,6 +99,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             ActivityCompat.requestPermissions(this, permissionsToRequest, 0)
         }
     }
+
     private fun initializeUI() {
         drawerLayout = findViewById(R.id.drawer_layout)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -103,6 +107,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val navigationView: NavigationView = findViewById(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this)
         navigationView.setItemIconTintList(null);
+        val headerView: android.view.View? = navigationView.getHeaderView(0)
+        val versionTextView: TextView = headerView?.findViewById(R.id.versionTextView) ?: return
+
+        try {
+            val packageInfo = packageManager.getPackageInfo(packageName, 0)
+            val version = packageInfo.versionName
+            versionTextView.text = "App Version: $version"
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
 
         val toggle = ActionBarDrawerToggle(
             this, drawerLayout, toolbar,

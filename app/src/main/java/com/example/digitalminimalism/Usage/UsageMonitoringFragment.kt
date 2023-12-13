@@ -25,6 +25,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -85,6 +86,8 @@ class UsageMonitoringFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.context?.let { safeContext ->
+            (activity as AppCompatActivity).supportActionBar?.title = "Usage Monitoring"
+
             pieChart = view.findViewById(R.id.pieChartUsage)
             val recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewUsage)
             val calendar = Calendar.getInstance()
