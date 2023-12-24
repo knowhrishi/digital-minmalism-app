@@ -2,6 +2,8 @@ package com.example.digitalminimalism.Focus.BottomNavigation.Timer
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +15,18 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.digitalminimalism.R
+import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class TimerNavFragment : Fragment() {
 
     private var selectedTime: Int = 0
+
+    // Initialize counter and sum at the top of your class
+    private var timerCounter = 0
+    private var totalTimerTime = 0
 
     companion object {
         const val POMODORO_WORK_TIME = 25 * 60 * 1000 // 25 minutes in milliseconds
@@ -31,10 +41,15 @@ class TimerNavFragment : Fragment() {
     }
 
     private var currentTimerType: TimerType? = TimerType.POMODORO
+    private var currentTimerDocId: String? = null
+
+    private lateinit var uniqueID: String
+    private val firestoreDB: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     enum class TimerType {
         POMODORO, TIMER_52_17, TIMER_90_MIN
     }
+
     enum class LinearLayoutType {
         STUDY, WORK, EXERCISE, RELAX, OTHER
     }
@@ -46,6 +61,33 @@ class TimerNavFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_timer_nav, container, false)
+        uniqueID =
+            Settings.Secure.getString(requireContext().contentResolver, Settings.Secure.ANDROID_ID)
+
+
+        // Query Firestore for an active timer
+        val userTrackingRef = firestoreDB.collection("userTracking").document(uniqueID)
+        userTrackingRef.collection("timers")
+            .whereEqualTo("status", "active")
+            .limit(1)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    // If an active timer is found, start the TimerRunningFragment with the timer's data
+                    val timerType = TimerType.valueOf(document.getString("timerType")!!)
+                    val selectedLinearLayoutType = LinearLayoutType.valueOf(document.getString("linearLayoutType")!!)
+                    val selectedTime = document.getLong("selectedTime")!!.toInt()
+                    currentTimerDocId = document.id
+
+                    val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
+                    fragmentManager.beginTransaction().replace(
+                        R.id.fragment_container,
+                        TimerRunningFragment(selectedTime.toLong(), timerType, selectedLinearLayoutType, currentTimerDocId)
+                    ).commit()
+                }
+            }
+
+
 
         val buttonPomodoroTimer: TextView = view.findViewById(R.id.button_pomo_timer)
         val buttonFiftyTwoSeventeenTimer: TextView = view.findViewById(R.id.button_second_timer)
@@ -77,27 +119,32 @@ class TimerNavFragment : Fragment() {
 
                 when (it.id) {
                     R.id.LinearLayout_study -> {
-                        Toast.makeText(context, "Study LinearLayout clicked", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Study LinearLayout clicked", Toast.LENGTH_SHORT)
+                            .show()
                         selectedLinearLayoutType = LinearLayoutType.STUDY
                     }
 
                     R.id.LinearLayoutWork -> {
-                        Toast.makeText(context, "Work LinearLayout clicked", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Work LinearLayout clicked", Toast.LENGTH_SHORT)
+                            .show()
                         selectedLinearLayoutType = LinearLayoutType.WORK
                     }
 
                     R.id.LinearLayoutExercise -> {
-                        Toast.makeText(context, "Exercise LinearLayout clicked", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Exercise LinearLayout clicked", Toast.LENGTH_SHORT)
+                            .show()
                         selectedLinearLayoutType = LinearLayoutType.EXERCISE
                     }
 
                     R.id.LinearLayoutRelax -> {
-                        Toast.makeText(context, "Relax LinearLayout clicked", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Relax LinearLayout clicked", Toast.LENGTH_SHORT)
+                            .show()
                         selectedLinearLayoutType = LinearLayoutType.RELAX
                     }
 
                     R.id.LinearLayoutOther -> {
-                        Toast.makeText(context, "Other LinearLayout clicked", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Other LinearLayout clicked", Toast.LENGTH_SHORT)
+                            .show()
                         selectedLinearLayoutType = LinearLayoutType.OTHER
                     }
                 }
@@ -110,17 +157,55 @@ class TimerNavFragment : Fragment() {
 
         buttonBegin.setOnClickListener(View.OnClickListener {
             if (currentTimerType != null && selectedLinearLayoutType != null) {
-                val fragmentManager: FragmentManager = requireActivity().supportFragmentManager
-                fragmentManager.beginTransaction().replace(
-                    R.id.fragment_container,
-                    TimerRunningFragment(selectedTime.toLong(), currentTimerType!!, selectedLinearLayoutType!!)
-                ).commit()
+                // Save to Firestore
+                val userTrackingRef = firestoreDB.collection("userTracking").document(uniqueID)
+                val timerRef = userTrackingRef.collection("timers").document()
+                // Increment counter and add to sum
+                timerCounter++
+                totalTimerTime += selectedTime
+
+                val timerData = hashMapOf(
+                    "timerType" to currentTimerType.toString(),
+                    "linearLayoutType" to selectedLinearLayoutType.toString(),
+                    "selectedTime" to selectedTime,
+                    "setAt" to System.currentTimeMillis(), // Current time in milliseconds
+                    "date" to SimpleDateFormat(
+                        "yyyy-MM-dd",
+                        Locale.getDefault()
+                    ).format(Date()), // Current date
+                    "timerCounter" to timerCounter, // Number of timers set by the user
+                    "totalTimerTime" to totalTimerTime, // Total time for which timers have been set
+                    "status" to "active" // Timer status
+                )
+
+                timerRef.set(timerData)
+                    .addOnSuccessListener {
+                        Log.d("Firestore", "DocumentSnapshot successfully written!")
+                        currentTimerDocId = timerRef.id // Store the ID of the new document
+
+                        // Start the TimerRunningFragment
+                        val fragmentManager: FragmentManager =
+                            requireActivity().supportFragmentManager
+                        fragmentManager.beginTransaction().replace(
+                            R.id.fragment_container,
+                            TimerRunningFragment(
+                                selectedTime.toLong(),
+                                currentTimerType!!,
+                                selectedLinearLayoutType!!,
+                                currentTimerDocId
+                            )
+                        ).commit()
+                    }
+                    .addOnFailureListener { e -> Log.w("Firestore", "Error writing document", e) }
             } else {
                 // Handle the case where currentTimerType or selectedLinearLayoutType is null
-                Toast.makeText(context, "Please select a timer type and a linear layout type", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    "Please select a timer type and a linear layout type",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
-
 
         val buttons = listOf(buttonPrepare, buttonStartNow)
         var selectedButton: TextView? = null
@@ -188,7 +273,7 @@ class TimerNavFragment : Fragment() {
 
             // Set current timer type to Pomodoro
             currentTimerType = TimerType.POMODORO
-            selectedTime = 10
+            selectedTime = 25
             Toast.makeText(context, "10 minutes selected", Toast.LENGTH_SHORT).show()
         }
 
@@ -202,7 +287,7 @@ class TimerNavFragment : Fragment() {
                 )
             ) // Set the text color for the selected state
             currentTimerType = TimerType.TIMER_52_17
-            selectedTime = 15
+            selectedTime = 52
             Toast.makeText(context, "15 minutes selected", Toast.LENGTH_SHORT).show()
         }
 
@@ -216,7 +301,7 @@ class TimerNavFragment : Fragment() {
                 )
             ) // Set the text color for the selected state
             currentTimerType = TimerType.TIMER_90_MIN
-            selectedTime = 25
+            selectedTime = 90
             Toast.makeText(context, "25 minutes selected", Toast.LENGTH_SHORT).show()
         }
 

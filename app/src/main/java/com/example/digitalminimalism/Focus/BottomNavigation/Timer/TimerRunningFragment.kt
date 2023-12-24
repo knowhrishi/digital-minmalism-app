@@ -4,6 +4,7 @@ import FocusModeFragment
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.provider.Settings
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,13 +17,18 @@ import androidx.fragment.app.FragmentManager
 import com.example.digitalminimalism.Focus.BottomNavigation.Active.ActiveNavFragment
 import com.example.digitalminimalism.R
 import com.google.android.material.progressindicator.CircularProgressIndicator
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
 
 class TimerRunningFragment(
     private val duration: Long,
     private val timerType: TimerNavFragment.TimerType,
-    private val selectedLinearLayoutType: TimerNavFragment.LinearLayoutType
+    private val selectedLinearLayoutType: TimerNavFragment.LinearLayoutType,
+    private val currentTimerDocId: String?
 ) : Fragment() {
 
+    private lateinit var uniqueID: String
+    private val firestoreDB: FirebaseFirestore = FirebaseFirestore.getInstance()
     private lateinit var timerTextView: TextView
     private lateinit var circularProgress: CircularProgressIndicator
     private lateinit var buttonNeedBreak: Button
@@ -30,7 +36,6 @@ class TimerRunningFragment(
     private var countDownTimer: CountDownTimer? = null
     private var remainingDuration: Long =
         0L // Variable to store the remaining duration before break
-
     private var workPeriodsCompleted = 0
 
     companion object {
@@ -50,6 +55,12 @@ class TimerRunningFragment(
         savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_timer_running, container, false)
+
+
+
+        uniqueID =
+            Settings.Secure.getString(requireContext().contentResolver, Settings.Secure.ANDROID_ID)
+
         timerTextView = view.findViewById(R.id.timerTextView)
         circularProgress = view.findViewById(R.id.circular_progress)
         buttonNeedBreak = view.findViewById(R.id.buttonNeedBreak)
@@ -79,18 +90,30 @@ class TimerRunningFragment(
             countDownTimer?.cancel()
             countDownTimer = null // Set the timer to null
             startBreakTimer(POMODORO_BREAK_SHORT) // Start break with defined duration
+
+            // Update status and increment breakCounter in Firestore
+            val userTrackingRef = firestoreDB.collection("userTracking").document(uniqueID)
+            val timerRef = userTrackingRef.collection("timers").document(currentTimerDocId.toString())
+            timerRef.update("status", "break")
+            timerRef.update("breakCounter", FieldValue.increment(1))
         }
 
         buttonEndSession.setOnClickListener {
             // Cancel the timer and return to the previous fragment
             countDownTimer?.cancel()
             returnToTimerNavFragment()
+
+            // Update status in Firestore
+            val userTrackingRef = firestoreDB.collection("userTracking").document(uniqueID)
+            val timerRef = userTrackingRef.collection("timers").document(currentTimerDocId.toString())
+            timerRef.update("status", "cancelled")
         }
     }
 
     private fun startBreakTimer(breakDuration: Long) {
         countDownTimer?.cancel() // Cancel any ongoing timer
         updateUIForSelectedType(selectedLinearLayoutType, isBreak = true)
+        buttonNeedBreak.visibility = View.GONE // Hide the "I need a break" button
         startTimer(breakDuration) {
             // After the break, resume the previous timer with the remaining duration
             updateUIForSelectedType(selectedLinearLayoutType, isBreak = false)
@@ -99,6 +122,8 @@ class TimerRunningFragment(
     }
 
     private fun startWorkTimer() {
+        buttonNeedBreak.visibility = View.VISIBLE // Show the "I need a break" button
+
         val workTime = when (timerType) {
             TimerNavFragment.TimerType.POMODORO -> POMODORO_WORK_TIME
             TimerNavFragment.TimerType.TIMER_52_17 -> TIMER_52_17_WORK_TIME
