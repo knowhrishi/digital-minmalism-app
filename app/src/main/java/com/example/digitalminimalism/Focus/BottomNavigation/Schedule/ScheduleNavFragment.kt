@@ -1,3 +1,4 @@
+// ScheduleNavFragment.kt
 package com.example.digitalminimalism.Focus.BottomNavigation.Schedule
 
 import android.annotation.SuppressLint
@@ -20,6 +21,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.example.digitalminimalism.R
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
@@ -47,7 +49,7 @@ class ScheduleNavFragment : Fragment() {
         uniqueID =
             Settings.Secure.getString(requireContext().contentResolver, Settings.Secure.ANDROID_ID)
         recyclerView = view.findViewById(R.id.recycler_scheduled_timers)
-        adapter = ScheduledTimerAdapter(listOf()) // Initialize with an empty list or fetched data
+        adapter = ScheduledTimerAdapter(mutableListOf()) // Initialize with an empty mutable list
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -177,7 +179,10 @@ class ScheduleNavFragment : Fragment() {
         val daysOfWeek = arrayOf("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
 
         // Prepare a HashMap to hold all timer information for the week
+        val timerId = UUID.randomUUID().toString()
+
         val weeklyTimerInfo = hashMapOf<String, Any>(
+            "id" to timerId,
             "startTime" to dndSchedule.startTime.timeInMillis,
             "endTime" to dndSchedule.endTime.timeInMillis,
             "selectedDays" to dndSchedule.selectedDays.mapIndexed { index, selected -> daysOfWeek[index] to selected }.toMap()
@@ -234,86 +239,40 @@ class ScheduleNavFragment : Fragment() {
         return offsetTime
     }
 
-
-    private fun getNextOccurrenceOfDay(dayOfWeek: Int): Calendar {
-        val today = Calendar.getInstance()
-        val nextDay = today.clone() as Calendar
-        nextDay.add(Calendar.DAY_OF_YEAR, ((dayOfWeek - today.get(Calendar.DAY_OF_WEEK) + 7) % 7))
-        return nextDay
-    }
-
-    @SuppressLint("ServiceCast", "ScheduleExactAlarm")
-    private fun scheduleDndForDay(day: Calendar, startTime: Calendar, endTime: Calendar) {
-        val alarmManager = requireContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-        // Creating intents that will be triggered when the alarm goes off
-        val startDndIntent = Intent(context, StartDndReceiver::class.java)
-        val endDndIntent = Intent(context, EndDndReceiver::class.java)
-
-        // Creating unique request codes for the PendingIntent
-        val requestCodeStart =
-            day.get(Calendar.DAY_OF_WEEK) * 100 + startTime.get(Calendar.HOUR_OF_DAY)
-        val requestCodeEnd = day.get(Calendar.DAY_OF_WEEK) * 100 + endTime.get(Calendar.HOUR_OF_DAY)
-
-        val startDndPendingIntent = PendingIntent.getBroadcast(
-            context,
-            requestCodeStart,
-            startDndIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-        val endDndPendingIntent = PendingIntent.getBroadcast(
-            context,
-            requestCodeEnd,
-            endDndIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-
-        // Scheduling the DND mode to be enabled at the chosen start time and disabled at the chosen end time
-        alarmManager.setExact(
-            AlarmManager.RTC_WAKEUP,
-            startTime.timeInMillis,
-            startDndPendingIntent
-        )
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, endTime.timeInMillis, endDndPendingIntent)
-    }
-
     data class ScheduledTimer(
+        val id: String,
         val startTime: Long,
         val endTime: Long,
-        val dayOfWeek: Int,
-        val selectedDays: BooleanArray // Add this line
+        val selectedDays: BooleanArray
     )
+
     private fun fetchScheduledTimers() {
         val userTrackingRef = firestoreDB.collection("userTracking").document(uniqueID)
-        val daysOfWeek = arrayOf("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
+        val noDataAnimation: LottieAnimationView = view?.findViewById(R.id.no_data_animation) ?: return
 
-        userTrackingRef.collection("scheduledTimers")
+        userTrackingRef.collection("scheduledTimers").document("weeklySchedule")
             .get()
-            .addOnSuccessListener { documents ->
-                val scheduledTimers = documents.map { document ->
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    val id = document.id
                     val startTime = document.getLong("startTime") ?: 0
                     val endTime = document.getLong("endTime") ?: 0
-                    val dayOfWeek = document.get("dayOfWeek")?.toString()?.toIntOrNull() ?: 0
+                    val selectedDaysMap = document.get("selectedDays") as Map<String, Boolean>
 
-                    // Process selectedDays
-                    val selectedDaysMap = document.get("selectedDays") as? Map<String, Boolean>
-                    val selectedDaysArray = BooleanArray(7) { false }
-                    selectedDaysMap?.forEach { (day, isSelected) ->
-                        val index = daysOfWeek.indexOf(day)
-                        if (index != -1) {
-                            selectedDaysArray[index] = isSelected
-                        }
-                    }
+                    // Convert the selectedDays map to an array in the same order as daysOfWeek
+                    val daysOfWeek = arrayOf("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
+                    val selectedDaysArray = BooleanArray(daysOfWeek.size) { index -> selectedDaysMap[daysOfWeek[index]] ?: false }
 
-                    ScheduledTimer(startTime, endTime, dayOfWeek, selectedDaysArray)
+                    val scheduledTimer = ScheduledTimer(id, startTime, endTime, selectedDaysArray)
+                    adapter.updateData(listOf(scheduledTimer)) // Update the adapter with a single fetched timer
+                    noDataAnimation.visibility = View.GONE // Hide the animation
+                } else {
+                    Log.d("Firestore", "No scheduled timers found")
+                    noDataAnimation.visibility = View.VISIBLE // Show the animation
                 }
-                adapter.updateData(scheduledTimers) // Update the adapter with the fetched data
             }
             .addOnFailureListener { e ->
-                Toast.makeText(
-                    requireContext(),
-                    "Failed to fetch scheduled timers: ${e.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(requireContext(), "Failed to fetch scheduled timers: ${e.message}", Toast.LENGTH_SHORT).show()
             }
-    }}
+    }
+}

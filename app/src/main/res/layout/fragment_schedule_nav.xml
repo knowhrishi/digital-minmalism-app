@@ -1,77 +1,68 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundAll"
-    android:layout_margin="5dp">
+    android:padding="10dp">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/nested_scroll_view"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <TextView
-        android:id="@+id/textView_focus_mode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Focus mode"
-        android:textColor="@color/colorPrimaryDark"
-        android:fontFamily="@font/poppins_black"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <!-- RecyclerView to show list of apps -->
+            <TextView
+                android:id="@+id/textView_focus_mode_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="When you need time to focus, you can schedule DND mode to silence notifications and hide distracting apps."
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textColor="@color/colorPrimaryDark" />
 
-    <TextView
-        android:id="@+id/textView_focus_mode_description"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="When you need time to focus, you can hide their notifications"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:fontFamily="@font/poppins_medium"
-        android:textColor="@color/colorPrimaryDark"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/textView_focus_mode"
-        app:layout_constraintTop_toBottomOf="@+id/textView_focus_mode" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_set_schedule"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Set a schedule"
+                android:textColor="@color/colorPrimaryDark"
+                app:cornerRadius="8dp" />
 
+            <TextView
+                android:id="@+id/textView_distracting_apps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/poppins_black"
+                android:text="Your Scheduled timers: "
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textColor="@color/colorPrimaryDark" />
 
-    <Button
-        android:id="@+id/button_set_schedule"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="12dp"
-        android:text="Set a schedule"
-        android:backgroundTint="@color/colorPrimaryDark"
-        android:background="@drawable/square_button"
-        android:fontFamily="@font/poppins_medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_focus_mode_description" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_scheduled_timers"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:clipToPadding="false"
+                android:padding="4dp"
+                tools:listitem="@layout/item_scheduled_timer" />
 
-    <TextView
-        android:id="@+id/textView_distracting_apps"
-        android:layout_width="311dp"
-        android:layout_height="23dp"
-        android:layout_marginTop="20dp"
-        android:text="Your Scheduled timers: "
-        android:fontFamily="@font/poppins_medium"
-        android:textColor="@color/colorPrimaryDark"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_set_schedule" />
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/no_data_animation"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:visibility="visible"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/not_found_anim" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_scheduled_timers"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:padding="5dp"
-        android:divider="@android:color/darker_gray"
-        android:dividerHeight="0.5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.533"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_distracting_apps"
-        app:layout_constraintVertical_bias="0.043" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
